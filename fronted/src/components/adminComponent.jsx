@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Box, Card, Flex, Heading, CardBody, Icon, Stack, Text, Tag, TagLabel, TagLeftIcon,Image, useDisclosure, Modal, ModalOverlay, ModalContent, ModalCloseButton, Input, ModalHeader, Button, Spinner, useStepContext } from "@chakra-ui/react";
-import { FaHeartbeat, FaHandHoldingMedical, FaUserMd } from "react-icons/fa";
+import { Box, Card, Flex, Heading, CardBody, Stack, Text, Tag, TagLabel, TagLeftIcon,Image, useDisclosure, Modal, ModalOverlay, ModalContent, ModalCloseButton, Input, ModalHeader, Button, Spinner, useStepContext } from "@chakra-ui/react";
+// import { FaHeartbeat, FaHandHoldingMedical, FaUserMd } from "react-icons/fa";
 import { RiShieldCheckFill } from 'react-icons/ri';
 import axios from "axios";
 import toast from "react-hot-toast";

@@ -15,7 +15,7 @@ router.post("/login",login);
 // for taking appointment
 router.post("/appointment",Appointment);
 // for checking live update of queue
-router.post('/livestatus',liveStatus);
+router.get('/livestatus/:id',liveStatus);
 
 router.post('/deleteAppointment',deleteAppointment)
 

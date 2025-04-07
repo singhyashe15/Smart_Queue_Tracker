@@ -37,7 +37,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const serverUrl = import.meta.env.VITE_SERVER_URL;
-
+console.log(import.meta.env.VITE_SERVER_URL)
     try {
       const res = await axios.post(`${serverUrl}/userapi/register`, client);
 

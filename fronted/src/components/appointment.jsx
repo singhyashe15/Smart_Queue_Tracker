@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Box, Button, FormControl, Input, Select, Spinner, Text } from '@chakra-ui/react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function Appointment() {
-  const [hide, setHide] = useState({ first: true, second: false, third: false, fourth: false });
+  const [step,setStep] = useState(1)
   const [detail, setDetails] = useState({ organisation: "", department: "", name: "", email: "", postalCode: 0 })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { organisation } = useParams()
+
+  useEffect(() => {
+    if (organisation) {
+      setDetails(prev => ({
+        ...prev,
+        organisation
+      }));
+    }
+  }, [organisation]);
 
   // add the details
   const handleChange = (e) => {
@@ -20,26 +29,19 @@ export default function Appointment() {
         [e.target.name]: e.target.value
       }
     })
-    e.target.name === 'department' && setHide((prev) => { return { ...prev, first: false, second: true } })
-    e.target.name === 'postalCode' && setHide((prev) => { return { ...prev, second: false, third: true } })
-    e.target.name === 'date' && setHide((prev) => { return { ...prev, third: false, fourth: true } })
   }
 
   // submit it
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setDetails((prev) => {
-      return {
-        ...prev,
-        organisation
-      }
-    })
-    console.log(detail.email)
+   
+    console.log(detail)
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     const res = await axios.post(`${serverUrl}/userapi/appointment`, detail)
-    if (res.sucess) {
-      toast.success("Your appointment was scheduled successfully");
+    
+    if (res.data.sucess === true) {
+      toast.success(res.data.msg);
       navigate("/")
     } else {
       toast.error(res.data.msg)
@@ -53,26 +55,29 @@ export default function Appointment() {
       <Box width={['90%', '70%']} bg="slate.500" color="black" border="2px solid" borderColor="gray.400" borderRadius="lg" boxShadow="md" textAlign="center" p="8">
         <form onSubmit={handleSubmit}>
           <FormControl>
-            {
-              hide.first &&
-              <Select name='department' onChange={handleChange}>
-                <option value="Enter Department">Enter Department</option>
-                <option name="Cardiologist">Cardiologist</option>
-                <option name="Dentist">Dentist</option>
+            {step === 1 && (
+              <Select name='department' onChange={(e) => {
+                handleChange(e);
+                setStep(2);
+              }}>
+                <option value="">Select Department</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Dentist">Dentist</option>
               </Select>
-            }
-            {
-              hide.second &&
+            )}
+
+            {step === 2 && (
               <>
-                <Input placeholder='Enter Your Name' name='Name' mt="4" onChange={handleChange} />
-                <Input placeholder='Enter Your Registered Email' mt="4" name='email' onChange={handleChange} />
-                <Input placeholder='Postal Code' type='number' name="postalCode" mt="4" onChange={handleChange} />
+                <Input placeholder='Enter Your Name' name='name' onChange={handleChange} mt="4" />
+                <Input placeholder='Enter Email' name='email' onChange={handleChange} mt="4" />
+                <Input placeholder='Postal Code' name='postalCode' onChange={handleChange} mt="4" />
+                <Button onClick={() => setStep(3)} mt="4">Next</Button>
               </>
-            }
-            {
-              hide.third &&
+            )}
+
+            {step === 3 && (
               <>
-                <Input placeholder='Select Date' size='md' name="date" type='date' />
+                <Input type="date" name="date" onChange={handleChange} />
                 <Button m="4"
                   colorScheme='teal'
                   type='submit'
@@ -81,8 +86,7 @@ export default function Appointment() {
                 >
                   {loading ? "Processing your appointment" : "Tap, Here to Confirm"}</Button>
               </>
-            }
-
+            )}
           </FormControl>
         </form>
       </Box>

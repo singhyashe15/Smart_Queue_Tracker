@@ -24,8 +24,8 @@ const Appointment = async (req, res) => {
 
       // Insert the appointment and return the inserted ID
       const booked = await pool.query(
-        "INSERT INTO appointment (organisation, department, name, email, date, pinCode) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
-        [patient.organisation, patient.department, patient.name, patient.email, patient.date, patient.pinCode]
+        "INSERT INTO appointment (organisation, department, name, email, date, pinCode,userId) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING id",
+        [patient.organisation, patient.department, patient.name, patient.email, patient.date, patient.postalCode,Found.rows[0].id]
       );
 
       const insertedId = booked.rows[0].id; // Fetch inserted appointment ID
