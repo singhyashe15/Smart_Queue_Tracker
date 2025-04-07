@@ -1,0 +1,96 @@
+import React from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+import Register from '../pages/register.jsx';
+import Login from '../pages/login.jsx';
+import Home from '../pages/home.jsx';
+import Admin from '../pages/admin.jsx';
+import Appointment from '../components/appointment.jsx';
+import ViewSchedule from '../components/viewSchedule.jsx';
+import ViewStatus from '../components/viewStatus.jsx';
+import AdminComponent from '../components/adminComponent.jsx';
+import ProtectedRoute from '../components/protectedRoute.jsx';
+import ProtectedAdminRoute from '../components/protectedAdmin.jsx';
+import NotFound from '../pages/notFound.jsx';
+import Error from '../pages/error.jsx';
+const router = createBrowserRouter([
+      {
+        path:'/',
+        element:<Home/>
+      },
+      {
+        path: 'register',
+        element: <Register/>,
+        errorElement:<Error/>
+      },
+      {
+        path: 'login',
+        element: <Login/>,
+        errorElement:<Error/>
+      },
+      {
+        path: 'home',
+        element: <Home/>,
+        errorElement:<Error/>
+      },
+      {
+        path:'admin',
+        element:<Admin/>,
+        errorElement:<Error/>
+      },
+      {
+        path:'appointment/:organisation',
+        element:<Appointment/>,
+        errorElement:<Error/>
+      },
+      {
+        path:'viewSchedule',
+        element:<ViewSchedule/>,
+        errorElement:<Error/>
+      },
+      {
+        path:'viewStatus',
+        element:<ViewStatus/>,
+        errorElement:<Error/>
+      },
+      {
+        path:'/appointment/:organisation',
+        element:(
+        <ProtectedRoute>
+            <Appointment/>
+        </ProtectedRoute>),
+        errorElement:<Error/>
+      },
+      {
+        path:'/viewSchedule',
+        element:(
+          <ProtectedRoute>
+            <ViewSchedule/>
+          </ProtectedRoute>
+        ),
+        errorElement:<Error/>
+      },
+      {
+        path:'/viewStatus',
+        element:(
+          <ProtectedRoute>
+            <ViewStatus/>
+          </ProtectedRoute>
+        ),
+        errorElement:<Error/>
+      },
+      {
+        path:'/adminView',
+        element:(
+          // <ProtectedAdminRoute>
+            <AdminComponent/>
+          // </ProtectedAdminRoute>
+        ),
+        errorElement:<Error/>
+      },
+      {
+        path:"*",
+        element:<NotFound/>
+      }
+]);
+
+export default router;
