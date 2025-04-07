@@ -4,7 +4,7 @@ import { FaLandmark, FaPiggyBank, FaSchool, FaShopify } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const MotionBox = motion.create(Box);
+const MotionBox = motion(Box);
 
 const CardProduct = [
   { id: 1, name: "Government", icon: FaLandmark },

@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
-const MotionBox = motion.create(Box);
+const MotionBox = motion(Box);
 
 const AnimatedCard = ({ id, title, content, activeCard }) => {
   const isActive = activeCard === id;
