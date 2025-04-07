@@ -51,7 +51,7 @@ export default function Login() {
         navigate("/home")
       }
     } catch (error) {
-      if(error.response?.status === 403){
+      if(error.response?.status === 402){
         toast.error(error.response.data.msg)
       }
     }
