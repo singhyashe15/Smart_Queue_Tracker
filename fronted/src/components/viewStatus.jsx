@@ -3,11 +3,14 @@ import { Box, Spinner, useBreakpointValue, Flex, HStack, VStack, Button,Text, Ic
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FaClock } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ViewStatus() {
   const StackComponent = useBreakpointValue({ base: 'VStack', md: 'HStack' });
   const [open, setOpen] = useState(false)
+  const navigate = useNavigate();
   let user = null;
   useEffect(() => {
     user = localStorage.getItem("user");
@@ -35,6 +38,31 @@ export default function ViewStatus() {
     staleTime: 10000
   })
 
+  // const checkLiveStatus = ()=>{
+
+  // }
+
+  const handleAppointment =async (org_name)=>{
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
+    try {
+      const res = await axios.post(`${serverUrl}/userapi/deleteAppointment`,org_name,{
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      })
+  
+      if(res.data.success){
+        toast.success(res.data.msg);
+        navigate('/')
+      }else{
+        toast.error(res.data.msg)
+      }
+    } catch (error) {
+      if(error.response?.status === 403){
+        toast.error(error.response.data.msg)
+      }
+    }
+  }
   if (isPending) {
     return (
       <VStack colorpalette="teal">
@@ -61,7 +89,7 @@ export default function ViewStatus() {
                   }
                 </HStack>
                 <StackComponent>
-                  <Button>Live Status</Button>
+                  {/* <Button onClick={checkLiveStatus}>Live Status</Button> */}
                   <Button onClick={() => handleAppointment("rajbari")}>Cancel Appointment</Button>
                 </StackComponent>
               </Flex>
