@@ -89,7 +89,7 @@ const router = createBrowserRouter([
     errorElement: <Error />
   },
   {
-    path: '/viewApplicant',
+    path: '/viewApplicant/:organisation/:department',
     element: (
       <ProtectedAdminRoute>
         <ViewApplicant />

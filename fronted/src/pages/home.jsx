@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, Link, Flex, Drawer, DrawerOverlay, DrawerCloseButton, DrawerBody, DrawerHeader, DrawerContent, IconButton, useDisclosure, VStack } from "@chakra-ui/react";
-import HomeComponent from "../components/homeComponent";
-import UserComponent from "../components/userComponent";
-import AdminComponent from "../components/adminComponent";
+import { HStack, Link, Flex, Drawer, DrawerOverlay, DrawerCloseButton, DrawerBody, DrawerHeader, DrawerContent, IconButton, useDisclosure, VStack, Avatar } from "@chakra-ui/react";
+import HomeComponent from "../components/homeComponent.jsx";
+import UserComponent from "../components/user/userComponent.jsx";
+import AdminComponent from "../components/admin/adminComponent.jsx";
+import ProtectedAdminRoute from "../components/protectedAdmin.jsx";
 import { FaBars } from "react-icons/fa";
+
+
 export default function Home() {
   const [user, setUser] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -19,9 +22,12 @@ export default function Home() {
       {/* Navigation Bar */}
       <HStack as="nav" py={[2, 4]} px={[4, 8]} spacing={[2, 4]} justify="space-between" bgColor="blue.500" position="fixed" top={0} left={0} right={0} zIndex={1000}>
         {/* Logo or Brand Name */}
-        <Link fontSize={["lg", "xl"]} fontWeight="bold">
-          MyApp
-        </Link>
+        <Avatar
+          src="queue.png"
+          name="queue logo"
+          height="40px"
+          width="40px"
+        />
 
         {/* Navigation Links */}
         {user === null && <HStack spacing={5} display={{ base: "none", md: "flex" }}>
@@ -31,8 +37,8 @@ export default function Home() {
         </HStack>
         }
         {
-          user?.id >= 0 &&
-          <HStack>
+          user?.id > 0 &&
+          <HStack display={{ base: "none", md: "flex" }}>
             <Link variant="plain" href="/" _hover={{ color: 'white' }} color="white">Logout</Link>
           </HStack>
         }
@@ -51,14 +57,14 @@ export default function Home() {
         <DrawerOverlay />
         <DrawerContent h="50vh" maxW="200px">
           <DrawerCloseButton />
-          {user !== null &&<DrawerHeader>Hey,{user?.name}</DrawerHeader>}
+          {user !== null && <DrawerHeader>Hey,{user?.name}</DrawerHeader>}
           <DrawerBody>
             {user != null && <Link display="block" mb={2} href="/login">Logout</Link>}
             {user === null &&
               <VStack align="left" spacing="4" pt="8">
                 <Link variant="plain" href="/admin"  >Admin</Link>
                 <Link variant="plain" href="/register" >Register</Link>
-                <Link variant="plain" href="/login"  >Login</Link>
+                <Link variant="plain" href="/login" >Login</Link>
               </VStack>
             }
           </DrawerBody>
@@ -67,12 +73,14 @@ export default function Home() {
 
       {/* Conditional Rendering Based on User Role */}
       <Flex align="center" justify="center">
-        {!user ? (
+        {user === null ? (
           <HomeComponent />
         ) : user.role === "user" ? (
           <UserComponent />
         ) : (
-          <AdminComponent />
+          <ProtectedAdminRoute>
+            <AdminComponent />
+          </ProtectedAdminRoute>
         )}
       </Flex>
     </Flex>

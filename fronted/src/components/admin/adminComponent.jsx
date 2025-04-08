@@ -84,7 +84,7 @@ export default function AdminComponent() {
                   </CardBody>
                   <CardFooter justifyContent="flex-end">
                     <HStack spacing="4">
-                      <Button variant="outline" onClick={navigate(`/viewApplicant/${dept?.name}`)}>View</Button>
+                      <Button variant="outline" onClick={navigate(`/viewApplicant/${organisation}/${dept?.name}`)}>View</Button>
                       <Button>Join</Button>
                     </HStack>
                   </CardFooter>
