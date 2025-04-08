@@ -16,8 +16,8 @@ const Appointment = async (req, res) => {
     if (Found.rowCount > 0) {
       // Count the total number of appointments in the same department
       const Count = await pool.query(
-        "SELECT COUNT(*) AS total_p FROM appointment WHERE department = $1",
-        [patient.department]
+        "SELECT COUNT(*) AS total_p FROM appointment WHERE department = $1 and organisation = $2",
+        [patient.department,patient.organisation]
       );
 
       const totalPatients = Count.rows[0].total_p || 0; // Fixing the count retrieval
