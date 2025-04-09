@@ -23,7 +23,8 @@ export default function ViewStatus() {
     const hours = now.getHours(); // Get current hours (0-23)
 
     const ans = hours >= 8 & hours < 16; // Check if within 8 AM to 4 PM
-    if (ans === true) {
+    console.log(ans)
+    if (ans) {
       setOpen(true)
     } else {
       setOpen(false)
@@ -34,8 +35,8 @@ export default function ViewStatus() {
     const url = import.meta.env.VITE_SERVER_URL;
     console.log(url)
     const res = await axios.get(`${url}/userapi/liveStatus/${id}`);
-    console.log(res.data.status)
-    return res.data.status === 201 ? res.data.data : [];
+    console.log(res)
+    return res.status === 201 ? res.data.data : [];
   };
   
   const { data, isPending } = useQuery({
@@ -48,10 +49,11 @@ export default function ViewStatus() {
 
   // }
 
-  const handleAppointment =async (org_name)=>{
+  const handleAppointment =async (dept)=>{
     const serverUrl = import.meta.env.VITE_SERVER_URL;
+    const id = user.id
     try {
-      const res = await axios.post(`${serverUrl}/userapi/deleteAppointment`,org_name,{
+      const res = await axios.post(`${serverUrl}/userapi/deleteAppointment`,{dept,id},{
         headers: {
           'Content-Type': 'text/plain'
         }
@@ -85,8 +87,9 @@ export default function ViewStatus() {
           data?.map((data) => {
             return (
               <Flex key={data?.id} direction="column" border="2px solid" borderColor="blue.400" borderRadius="lg" px="8" py="4">
-                <Text>{data?.organisation}</Text>
-                <Text>{data?.department}</Text>
+                <Text my="2">{data?.organisation}</Text>
+                <Text my="2">{data?.department}</Text>
+                <Text my="2">{data?.appointment_time}</Text>
                 <HStack spacing={2} align="center">
                   <Icon as={FaClock} boxSize={4} color="gray.500" />
                   {
@@ -94,9 +97,9 @@ export default function ViewStatus() {
                       <Text color="red.400" fontWeight="500">Closed</Text>
                   }
                 </HStack>
-                <StackComponent>
+                <StackComponent m="4">
                   {/* <Button onClick={checkLiveStatus}>Live Status</Button> */}
-                  <Button onClick={() => handleAppointment("rajbari")}>Cancel Appointment</Button>
+                  <Button onClick={() => handleAppointment(data?.department)}>Cancel Appointment</Button>
                 </StackComponent>
               </Flex>
             )

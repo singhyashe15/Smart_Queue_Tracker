@@ -13,6 +13,7 @@ import ProtectedAdminRoute from '../components/protectedAdmin.jsx';
 import NotFound from '../pages/notFound.jsx';
 import Error from '../pages/error.jsx';
 import ViewApplicant from '../components/admin/viewApplicant.jsx';
+import Logout from '../components/logout.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -27,6 +28,11 @@ const router = createBrowserRouter([
     path: 'login',
     element: <Login />,
     errorElement: <Error />
+  },
+  {
+    path:'logout',
+    element:<Logout/>,
+    errorElement:<Error/>
   },
   {
     path: 'home',

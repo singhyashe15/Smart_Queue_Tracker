@@ -1,11 +1,12 @@
-import React, { useState,useEffect } from 'react';
-import { Box, Button, FormControl, Input, Select, Spinner, Text } from '@chakra-ui/react'
+import React, { useState, useEffect } from 'react';
+import { Box, Button, FormControl, Input, Select, Spinner, Text,InputGroup,InputRightElement,Icon } from '@chakra-ui/react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 export default function Appointment() {
-  const [step,setStep] = useState(1)
+  const [step, setStep] = useState(1)
   const [detail, setDetails] = useState({ organisation: "", department: "", name: "", email: "", postalCode: 0 })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -35,11 +36,10 @@ export default function Appointment() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-   
-    console.log(detail)
+
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     const res = await axios.post(`${serverUrl}/userapi/appointment`, detail)
-    
+
     if (res.data.sucess === true) {
       toast.success(res.data.msg);
       navigate("/")
@@ -77,7 +77,12 @@ export default function Appointment() {
 
             {step === 3 && (
               <>
-                <Input type="date" name="date" onChange={handleChange} />
+                <InputGroup>
+                  <Input type="date" onChange={handleChange}/>
+                  <InputRightElement pointerEvents="none">
+                    <Icon as={FaRegCalendarAlt} color="gray.400" />
+                  </InputRightElement>
+                </InputGroup>
                 <Button m="4"
                   colorScheme='teal'
                   type='submit'

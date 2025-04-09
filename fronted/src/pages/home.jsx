@@ -39,7 +39,7 @@ export default function Home() {
         {
           user?.id > 0 &&
           <HStack display={{ base: "none", md: "flex" }}>
-            <Link variant="plain" href="/" _hover={{ color: 'white' }} color="white">Logout</Link>
+            <Link variant="plain" href="/logout" _hover={{ color: 'white' }} color="white">Logout</Link>
           </HStack>
         }
 
@@ -59,7 +59,7 @@ export default function Home() {
           <DrawerCloseButton />
           {user !== null && <DrawerHeader>Hey,{user?.name}</DrawerHeader>}
           <DrawerBody>
-            {user != null && <Link display="block" mb={2} href="/login">Logout</Link>}
+            {user !== null && <Link display="block" mb={2} href="/logout">Logout</Link>}
             {user === null &&
               <VStack align="left" spacing="4" pt="8">
                 <Link variant="plain" href="/admin"  >Admin</Link>
