@@ -21,5 +21,4 @@ A modern web-based queue management system built with React (frontend) and Node.
 - Express.js
 - PostgreSQL
 
-## 🏗️ Project Structure
 
