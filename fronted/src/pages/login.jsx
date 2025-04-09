@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [client, setClient] = useState({email:"", role: "" });
+  const [client, setClient] = useState({ email: "", role: "" });
   const [hide, setHide] = useState(false);
   const navigate = useNavigate()
   const handlechange = (e) => {
@@ -34,24 +34,38 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { email, role, password, cpass, p_key } = client;
+
+    if (!email || !role) {
+      return toast.error("Please fill all required fields.");
+    }
+
+    if (role === "user") {
+      if (!password || !cpass) return toast.error("Please enter password and confirm password.");
+      if (password !== cpass) return toast.error("Passwords do not match.");
+    }
+
+    if (role === "admin" && !p_key) {
+      return toast.error("Please enter the admin key.");
+    }
     try {
       const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-      const res = await axios.post(`${serverUrl}/userapi/login`,client,{
-        withCredentials:true
+      const res = await axios.post(`${serverUrl}/userapi/login`, client, {
+        withCredentials: true
       });
-  
-      if(res.data.success === false){
+
+      if (res.data.success === false) {
         toast.error(res.data.msg);
-      }else if(res.data.success === true){
+      } else if (res.data.success === true) {
         toast.success(res.data.msg)
-        localStorage.setItem("token",res.data.token)
+        localStorage.setItem("token", res.data.token)
         navigate("/home")
       }
     } catch (error) {
-      if(error.response?.status === 402){
+      if (error.response?.status === 402) {
         toast.error(error.response.data.msg)
       }
     }

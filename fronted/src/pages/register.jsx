@@ -37,7 +37,20 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const serverUrl = import.meta.env.VITE_SERVER_URL;
-console.log(import.meta.env.VITE_SERVER_URL)
+    const { name, email, role, password, cpass, p_key } = client;
+
+    if (!name || !email || !role) {
+      return toast.error("Please fill all required fields.");
+    }
+
+    if (role === "user") {
+      if (!password || !cpass) return toast.error("Please enter password and confirm password.");
+      if (password !== cpass) return toast.error("Passwords do not match.");
+    }
+
+    if (role === "admin" && !p_key) {
+      return toast.error("Please enter the admin key.");
+    }
     try {
       const res = await axios.post(`${serverUrl}/userapi/register`, client);
 
@@ -46,10 +59,11 @@ console.log(import.meta.env.VITE_SERVER_URL)
       } else {
         toast.success(res.data.msg)
         const user_info = {
-          role:res.data.role,
-          id:res.data.id
+          role: res.data.role,
+          id: res.data.id,
+          name: res.data.name
         }
-        localStorage.setItem("user",JSON.stringify(user_info))
+        localStorage.setItem("user", JSON.stringify(user_info))
         navigate("/login")
       }
     } catch (error) {
