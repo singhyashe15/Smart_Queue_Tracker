@@ -39,10 +39,11 @@ export default function AdminComponent() {
     const saved = localStorage.getItem("detail");
     return saved !== null ? JSON.parse(saved).organisation : null;
   });
-  const { onOpen, isOpen, onClose } = useDisclosure()
+  const { onOpen, isOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
-  const StackComponent = useBreakpointValue({ base: VStack, md: HStack })
-  const navigate = useNavigate()
+  const StackComponent = useBreakpointValue({ base: VStack, md: HStack });
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
 
     setLoading(true)
@@ -55,7 +56,6 @@ export default function AdminComponent() {
 
     if (res.data.success === true) {
       const organisation = res.data.organisation;
-      // const department = res.data.organisation;
       localStorage.setItem("detail", { key, organisation })
       setLoading(false)
       toast.success(res.data.msg)

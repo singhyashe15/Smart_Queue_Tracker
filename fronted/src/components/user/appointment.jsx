@@ -78,7 +78,7 @@ export default function Appointment() {
             {step === 3 && (
               <>
                 <InputGroup>
-                  <Input type="date" onChange={handleChange}/>
+                  <Input type="date" placeholder="Enter date of appointment" onChange={handleChange}/>
                   <InputRightElement pointerEvents="none">
                     <Icon as={FaRegCalendarAlt} color="gray.400" />
                   </InputRightElement>

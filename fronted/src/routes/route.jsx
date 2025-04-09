@@ -30,9 +30,9 @@ const router = createBrowserRouter([
     errorElement: <Error />
   },
   {
-    path:'logout',
-    element:<Logout/>,
-    errorElement:<Error/>
+    path: 'logout',
+    element: <Logout />,
+    errorElement: <Error />
   },
   {
     path: 'home',
@@ -46,17 +46,28 @@ const router = createBrowserRouter([
   },
   {
     path: 'appointment/:organisation',
-    element: <Appointment />,
+    element: (
+      <ProtectedRoute>
+        <Appointment />
+      </ProtectedRoute>
+    ),
     errorElement: <Error />
   },
   {
     path: 'viewSchedule',
-    element: <ViewSchedule />,
+    element: (
+      <ProtectedRoute>
+        <ViewSchedule />
+      </ProtectedRoute>),
     errorElement: <Error />
   },
   {
     path: 'viewStatus',
-    element: <ViewStatus />,
+    element: (
+      <ProtectedRoute>
+        <ViewStatus />
+      </ProtectedRoute>
+    ),
     errorElement: <Error />
   },
   {
@@ -77,20 +88,11 @@ const router = createBrowserRouter([
     errorElement: <Error />
   },
   {
-    path: '/viewStatus',
-    element: (
-      <ProtectedRoute>
-        <ViewStatus />
-      </ProtectedRoute>
-    ),
-    errorElement: <Error />
-  },
-  {
     path: '/adminView',
     element: (
-      // <ProtectedAdminRoute>
-      <AdminComponent />
-      // </ProtectedAdminRoute>
+      <ProtectedAdminRoute>
+        <AdminComponent />
+      </ProtectedAdminRoute>
     ),
     errorElement: <Error />
   },

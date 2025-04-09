@@ -53,9 +53,14 @@ export default function ViewStatus() {
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     const id = user.id
     try {
-      const res = await axios.post(`${serverUrl}/userapi/deleteAppointment`,{dept,id},{
+      const res = await axios.delete(`${serverUrl}/userapi/deleteAppointment`,{
+        data:{
+          dept:"Cardiologist",
+          id:"11"
+        }
+      },{
         headers: {
-          'Content-Type': 'text/plain'
+          'Content-Type': 'application/json'
         }
       })
   
@@ -88,7 +93,7 @@ export default function ViewStatus() {
             return (
               <Flex key={data?.id} direction="column" border="2px solid" borderColor="blue.400" borderRadius="lg" px="8" py="4">
                 <Text my="2">{data?.organisation}</Text>
-                <Text my="2">{data?.department}</Text>
+                <Text>{data?.department}</Text>
                 <Text my="2">{data?.appointment_time}</Text>
                 <HStack spacing={2} align="center">
                   <Icon as={FaClock} boxSize={4} color="gray.500" />
