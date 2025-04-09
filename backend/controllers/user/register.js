@@ -22,7 +22,7 @@ const register = async(req,res)=>{
       console.log(email.success)
       if(email.success){
         const usercreated = await pool.query("INSERT INTO users (name,email,role,password) VALUES ($1,$2,$3,$4) RETURNING *",[user.name,user.email,user.role,hashPass])
-        return res.status(201).json({msg:"Registered Successfully, Check Out your Email",role:user.role,id:usercreated.rows[0].id,success:true})
+        return res.status(201).json({msg:"Registered Successfully, Check Out your Email",role:user.role,id:usercreated.rows[0].id,name:usercreated.rows[0].name,success:true})
       }
         return res.status(400).json({msg:"False Email "})
     } catch (error) {

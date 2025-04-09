@@ -10,6 +10,7 @@ const appointment = async () => {
         organisation VARCHAR(100) NOT NULL,
         department VARCHAR(100) NOT NULL,
         date DATE NOT NULL,
+        appointment_time TIME, 
         pinCode INT NULL,
         userid INT references users(id),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

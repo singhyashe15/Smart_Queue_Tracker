@@ -16,7 +16,7 @@ const Transporter = createTransport({
     rejectUnauthorized: false, // Helps prevent SSL issues
   },
 })
-const sendEmail = async (name, email, c_id, date, time) => {
+const sendEmail = async (name, email,department,organisation, c_id, date, time) => {
   const qrCodeData = `${email}`;
   console.log(qrCodeData)
   const qrCodeImage = await QRCode.toDataURL(qrCodeData); // Convert to base64
@@ -30,7 +30,7 @@ const sendEmail = async (name, email, c_id, date, time) => {
       to: email, // list of receivers
       subject: "Appointment Confirmation",
       html: `<h2>Welcome to Smart Queue</h2> </br>
-                <p>Hello ${name},your Appointment is Confirmed</p>
+                <p>Hello ${name},your Appointment is Confirmed for${department} at${organisation}</p>
                 <p>Your Coupon id is ${c_id}</p>
                 <p>Reach Out on ${date} at ${time}</p>
                  <img src="cid:qrcodecid" alt="QR Code" style="width:200px;height:200px;">
