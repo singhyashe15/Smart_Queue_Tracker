@@ -7,12 +7,12 @@ const login = async (req, res) => {
     
     const Found = await pool.query("SELECT * FROM USERS WHERE EMAIL=$1", [user.email]);
     if (Found.rows.length === 0) {
-      return res.json(401).json({ msg: "Invalid Credentials" });
+      return res.status(404).json({ msg: "Invalid Credentials" ,success:false});
     }
 
     const hpass = await bcrypt.compare(user.password, Found.rows[0].password);
     if (hpass === false) {
-      return res.status(403).json({ msg: "Invalid Password" });
+      return res.status(404).json({ msg: "Invalid Password",success:false });
     }
 
     const token_data = {
