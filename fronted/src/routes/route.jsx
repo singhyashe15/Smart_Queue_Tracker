@@ -91,9 +91,9 @@ const router = createBrowserRouter([
   {
     path: '/adminView',
     element: (
-      <ProtectedAdminRoute>
+      // <ProtectedAdminRoute>
         <AdminComponent />
-      </ProtectedAdminRoute>
+      // </ProtectedAdminRoute>
     ),
     errorElement: <Error />
   },

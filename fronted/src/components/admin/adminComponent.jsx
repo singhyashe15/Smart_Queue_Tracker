@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import {  Card, Flex, Heading, CardBody, Stack, Text, Tag, TagLabel, TagLeftIcon, useDisclosure, Modal, ModalOverlay, ModalContent, ModalCloseButton, Input, ModalHeader, Button, Spinner, useBreakpointValue, VStack, HStack, CardFooter, Icon } from "@chakra-ui/react";
+import {
+  Card, Flex, Heading, CardBody, Text, Tag, TagLabel, TagLeftIcon,
+  useDisclosure, Modal, ModalOverlay, ModalContent, ModalCloseButton,
+  Input, ModalHeader, Button, Spinner, useBreakpointValue,
+  VStack, HStack, CardFooter, Icon
+} from "@chakra-ui/react";
 import { FaTimesCircle, FaHeartbeat } from "react-icons/fa";
 import { RiShieldCheckFill } from 'react-icons/ri';
 import axios from "axios";
@@ -26,89 +31,118 @@ const Hospital = [
   { name: "Vaccination Center / Immunization Unit" }
 ];
 
-const sub_dept = {
-  Bank, Hospital, Government
-}
+const sub_dept = { Bank, Hospital, Government };
 
 export default function AdminComponent() {
   const [key, setKey] = useState(() => {
     const saved = localStorage.getItem("detail");
-    return saved !== null ? JSON.parse(saved).key : null;
+    return saved !== null ? JSON.parse(saved).key : "";
   });
   const [organisation, setOrganisation] = useState(() => {
     const saved = localStorage.getItem("detail");
     return saved !== null ? JSON.parse(saved).organisation : null;
   });
+
   const { onOpen, isOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const StackComponent = useBreakpointValue({ base: VStack, md: HStack });
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-
-    setLoading(true)
-    const serverUrl = import.meta.env.VITE_SERVER_URL;
-    const res = await axios.post(`${serverUrl}/adminapi/fetchKey`, key, {
-      headers: {
-        'Content-Type': 'text/plain'
-      }
-    })
-
-    if (res.data.success === true) {
-      const organisation = res.data.organisation;
-      localStorage.setItem("detail", { key, organisation })
-      setLoading(false)
-      toast.success(res.data.msg)
-      onClose();
-    } else {
-      toast.error("Not Verified, Check Your Code")
+    if (!key) {
+      toast.error("Please enter a code.");
+      return;
     }
-  }
+    setLoading(true);
+    try {
+      const serverUrl = import.meta.env.VITE_SERVER_URL;
+      const res = await axios.post(`${serverUrl}/adminapi/fetchKey`, key, {
+        headers: { 'Content-Type': 'text/plain' }
+      });
+
+      if (res.data.success === true) {
+        const organisation = res.data.organisation;
+        const detail = JSON.stringify({ key, organisation });
+        localStorage.setItem("detail", detail);
+        setOrganisation(organisation);
+        setLoading(false);
+        toast.success(res.data.msg);
+        onClose();
+      } else {
+        toast.error("Not Verified, Check Your Code");
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error("Server Error. Try again later.");
+      setLoading(false);
+    }
+  };
 
   return (
-    <Flex direction="column" align="center" justify="center" mt="16">
-      <Tag size="md" variant='subtle' colorScheme='cyan' cursor="pointer" onClick={() => onOpen()}>
-        <TagLeftIcon boxSize='12px' as={organisation === null ? FaTimesCircle : RiShieldCheckFill} />
-        <TagLabel>Verify</TagLabel>
+    <Flex direction="column" align="center" justify="center" mt="16" px={4}>
+      <Tag
+        size="lg"
+        variant='solid'
+        colorScheme={organisation ? 'green' : 'red'}
+        cursor="pointer"
+        onClick={onOpen}
+        mb={4}
+      >
+        <TagLeftIcon boxSize='14px' as={organisation ? RiShieldCheckFill : FaTimesCircle} />
+        <TagLabel>{organisation ? "Verified" : "Verify Admin Access"}</TagLabel>
       </Tag>
-      {organisation !== null &&
+
+      {organisation && (
         <>
-          <Heading>Welcome to {organisation} Management System</Heading>
-          <StackComponent>
-            {sub_dept[organisation]?.map((index, dept) => {
-              return (
-                <Card width="220px" key={index} >
-                  <CardBody>
-                    <Icon as={FaHeartbeat} boxSize="6" color="red.500" />
-                    <Text>{dept?.name}</Text>
-                  </CardBody>
-                  <CardFooter justifyContent="flex-end">
-                    <HStack spacing="4">
-                      <Button variant="outline" onClick={navigate(`/viewApplicant/${organisation}/${dept?.name}`)}>View</Button>
-                      <Button>Join</Button>
-                    </HStack>
-                  </CardFooter>
-                </Card>
-              )
-            }
-            )}
+          <Heading mb={6} textAlign="center" fontSize="2xl">
+            Welcome to {organisation} Management System
+          </Heading>
+
+          <StackComponent spacing={6} flexWrap="wrap" justify="center">
+            {sub_dept[organisation]?.map((dept, index) => (
+              <Card width="250px" key={index} shadow="lg" borderWidth="1px">
+                <CardBody>
+                  <Icon as={FaHeartbeat} boxSize="6" color="red.500" mb={2} />
+                  <Text fontWeight="semibold" fontSize="lg">{dept.name}</Text>
+                </CardBody>
+                <CardFooter justifyContent="space-between">
+                  <Button
+                    variant="outline"
+                    colorScheme="blue"
+                    onClick={() => navigate(`/viewApplicant/${organisation}/${dept.name}`)}
+                  >
+                    View
+                  </Button>
+                  <Button colorScheme="teal">Join</Button>
+                </CardFooter>
+              </Card>
+            ))}
           </StackComponent>
         </>
-      }
+      )}
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent h="50vh" maxW="350px">
-          <ModalHeader>Enter the Details</ModalHeader>
+        <ModalContent maxW="350px">
+          <ModalHeader>Enter Admin Code</ModalHeader>
           <ModalCloseButton />
-          <Flex direction="column" justify="center" align="center" p="4">
-            <Input placeholder="Enter Code" name="key" onChange={(e) => setKey(e.target.value)} />
-            <Button leftIcon={loading && <Spinner size={20} />} onClick={handleSubmit}>
-              {loading ? "Verifying" : "Verify"}
+          <Flex direction="column" gap={4} px={6} py={4}>
+            <Input
+              placeholder="Enter Code"
+              value={key}
+              onChange={(e) => setKey(e.target.value)}
+            />
+            <Button
+              colorScheme="blue"
+              onClick={handleSubmit}
+              isLoading={loading}
+              loadingText="Verifying"
+            >
+              Verify
             </Button>
           </Flex>
         </ModalContent>
       </Modal>
     </Flex>
-  )
+  );
 }
