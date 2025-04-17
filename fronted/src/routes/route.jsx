@@ -73,9 +73,10 @@ const router = createBrowserRouter([
   {
     path: '/appointment/:organisation',
     element: (
-      <ProtectedRoute>
+      // <ProtectedRoute>
         <Appointment />
-      </ProtectedRoute>),
+      // </ProtectedRoute>
+    ),
     errorElement: <Error />
   },
   {
@@ -99,9 +100,9 @@ const router = createBrowserRouter([
   {
     path: '/viewApplicant/:organisation/:department',
     element: (
-      <ProtectedAdminRoute>
+      // <ProtectedAdminRoute>
         <ViewApplicant />
-      </ProtectedAdminRoute>
+      // </ProtectedAdminRoute>
     )
   },
   {

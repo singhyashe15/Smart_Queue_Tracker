@@ -7,7 +7,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 
 export default function Appointment() {
   const [step, setStep] = useState(1)
-  const [detail, setDetails] = useState({ organisation: "", department: "", name: "", email: "", postalCode: 0 })
+  const [detail, setDetails] = useState({ organisation: "", department: "", name: "",age:"", email: "", postalCode: 0 })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { organisation } = useParams()
@@ -39,12 +39,15 @@ export default function Appointment() {
 
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     const res = await axios.post(`${serverUrl}/userapi/appointment`, detail)
-
-    if (res.data.sucess === true) {
-      toast.success(res.data.msg);
-      navigate("/")
-    } else {
-      toast.error(res.data.msg)
+    try {
+      if (res.data.sucess === true) {
+        toast.success(res.data.msg);
+        navigate("/")
+      } else {
+        toast.error(res.data.msg)
+      } 
+    } catch (error) {
+      toast.error(error.response.data.msg)
     }
     setLoading(false);
   }
@@ -69,6 +72,7 @@ export default function Appointment() {
             {step === 2 && (
               <>
                 <Input placeholder='Enter Your Name' name='name' onChange={handleChange} mt="4" />
+                <Input placeholder='Enter Your Age' name='age' onChange={handleChange} mt="4" />
                 <Input placeholder='Enter Email' name='email' onChange={handleChange} mt="4" />
                 <Input placeholder='Postal Code' name='postalCode' onChange={handleChange} mt="4" />
                 <Button onClick={() => setStep(3)} mt="4">Next</Button>

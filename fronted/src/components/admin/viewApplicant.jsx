@@ -1,12 +1,12 @@
 import React from "react"
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { HStack, useBreakpointValue, VStack,Text,Button } from "@chakra-ui/react";
+import { VStack, Text, Button, Flex, Box, Circle, } from "@chakra-ui/react";
+import { FaCheck } from "react-icons/fa";
 
 export default function ViewApplicant() {
   const { organisation, department } = useParams();
-  const StackComponent = useBreakpointValue({base:VStack,md:HStack})
-
+  // const StackComponent = useBreakpointValue({ base: VStack, md: VStack })
   // Fetching the data of patient
   const fetchApplicant = async (organisation, department) => {
     const url = import.meta.env.VITE_SERVER_URL;
@@ -14,15 +14,15 @@ export default function ViewApplicant() {
     return res.status === 201 ? res.data.data : [];
   }
 
-  useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["viewapplicant"],
     queryFn: () => fetchApplicant(organisation, department)
   })
 
-  const handleCheckUp = async()=>{
+  const handleCheckUp = async () => {
     const url = import.meta.env.VITE_SERVER_URL;
-    await axios.delete(`${url}/adminapi/deleteData`,{
-      data:{
+    await axios.delete(`${url}/adminapi/deleteData`, {
+      data: {
         id
       }
     })
@@ -30,21 +30,48 @@ export default function ViewApplicant() {
 
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" width="100vw">
-          <StackComponent>
-            {
-              data?.map((data) => {
-                return (
-                  <Flex key={data?.id} direction="column" border="2px solid" borderColor="blue.400" borderRadius="lg" px="8" py="4">
-                    <Text my="4" fontSize="lg" fontWeight="400">Id : {data?.id}</Text>
-                    <Text fontSize="lg" fontWeight="400">Patient Name: {data?.name}</Text>
-                    <StackComponent m="4">
-                      <Button onClick={() => handleCheckUp(data?.id)}>HandleCheckUp</Button>
-                    </StackComponent>
-                  </Flex>
-                )
-              })
-            }
-          </StackComponent>
-        </Box>
+      <VStack>
+        {data?.map((data, index) => (
+          <Flex key={index} align="start" position="relative">
+            <VStack spacing={0} mr={4}>
+              <Circle
+                size="20px"
+              // border={step.status === "upcoming" ? "2px solid #ccc" : "none"}
+              >
+                {/* {step.status === "completed" && (
+                  <FaCheck color="white" size="md" />
+                )} */}
+              </Circle>
+
+              {/* Line below the circle */}
+              {index !== data.length - 1 && (
+                <Box
+                  w="2px"
+                  h="40px"
+                  bg="gray.300"
+                  ml="8px"
+                  mt={1}
+                />
+              )}
+            </VStack>
+
+            {/* Content next to the circle */}
+            <Box
+              py={2}
+              px={3}
+              bg="green.50"
+              borderRadius="md"
+              minW="200px"
+            >
+              <Text fontWeight="semibold">Patient Name: {data?.name}</Text>
+              <Text>{data?.age}</Text>
+              <Text>{data?.date}</Text>
+              <Text>{data?.appointment_time}</Text>
+              <Button onClick={() => handleCheckUp(data?.id)}>HandleCheckUp</Button>
+            </Box>
+          </Flex>
+        ))}
+      </VStack>
+    </Box>
   )
 }
