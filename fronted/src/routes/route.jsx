@@ -14,6 +14,7 @@ import NotFound from '../pages/notFound.jsx';
 import Error from '../pages/error.jsx';
 import ViewApplicant from '../components/admin/viewApplicant.jsx';
 import Logout from '../components/logout.jsx';
+import Dashboard from '../components/admin/dashboard.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -45,6 +46,15 @@ const router = createBrowserRouter([
     errorElement: <Error />
   },
   {
+    path: 'dashboard',
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
+    errorElement: <Error />
+  },
+  {
     path: 'appointment/:organisation',
     element: (
       <ProtectedRoute>
@@ -73,9 +83,9 @@ const router = createBrowserRouter([
   {
     path: '/appointment/:organisation',
     element: (
-      // <ProtectedRoute>
+      <ProtectedRoute>
         <Appointment />
-      // </ProtectedRoute>
+      </ProtectedRoute>
     ),
     errorElement: <Error />
   },
@@ -91,18 +101,18 @@ const router = createBrowserRouter([
   {
     path: '/adminView',
     element: (
-      // <ProtectedAdminRoute>
+      <ProtectedAdminRoute>
         <AdminComponent />
-      // </ProtectedAdminRoute>
+      </ProtectedAdminRoute>
     ),
     errorElement: <Error />
   },
   {
     path: '/viewApplicant/:organisation/:department',
     element: (
-      // <ProtectedAdminRoute>
+      <ProtectedAdminRoute>
         <ViewApplicant />
-      // </ProtectedAdminRoute>
+      </ProtectedAdminRoute>
     )
   },
   {

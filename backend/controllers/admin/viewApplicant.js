@@ -4,7 +4,7 @@ const viewApplicant = async(req,res)=>{
   const {organisation,department} = req.params;
   console.log(department)
   try {
-    const data = await pool.query("SELECT * FROM appointment WHERE organisation = $1 AND department = $2",[organisation,department]);
+    const data = await pool.query("SELECT * FROM appointment WHERE organisation = $1 AND department = $2 ORDER BY date ASC,appointment_time ASC",[organisation,department]);
     if(data.rowCount > 0){
       return res.status(201).json({msg:"Fetched Data Successfully",data:data.rows,success:true});
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Flex, HStack, Card, Stack, VStack, CardBody, useBreakpointValue, Text, Icon } from "@chakra-ui/react";
-import { FaLandmark, FaPiggyBank, FaSchool, FaShopify } from "react-icons/fa";
+import { FaLandmark, FaPiggyBank, FaSchool, FaHospital } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const CardProduct = [
   { id: 1, name: "Government", icon: FaLandmark },
   { id: 2, name: "Institutions", icon: FaSchool },
   { id: 3, name: "Bank", icon: FaPiggyBank },
-  { id: 4, name: "Shop", icon: FaShopify }
+  { id: 4, name: "Hospital", icon:FaHospital  }
 ];
 
 export default function UserComponent() {
@@ -18,7 +18,6 @@ export default function UserComponent() {
   const navigate = useNavigate();
 
   const handleroute = () => {
-    console.log("Navigating...");
     navigate("/viewSchedule");
   };
 
@@ -53,6 +52,8 @@ export default function UserComponent() {
           </MotionBox>
         ))}
       </StackComponent>
+
+      
     </Flex>
   );
 }

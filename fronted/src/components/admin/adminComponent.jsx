@@ -79,7 +79,7 @@ export default function AdminComponent() {
   };
 
   return (
-    <Flex direction="column" align="center" justify="center" mt="16" px={4}>
+    <Flex direction="column" align="center" justify="center" height="100vh" width="100vw"  mt="16" px={4}>
       <Tag
         size="lg"
         variant='solid'
