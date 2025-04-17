@@ -23,6 +23,7 @@ const Appointment = async (req, res) => {
       );
 
       // Calculate the appointment time
+      const totalPatients = Count.rows[0].total_p || 0; // Fixing the count retrieval
       const people_time = totalPatients * 10; // Assuming each consultation takes 10 minutes
       date.setHours(hours, minutes + people_time);
 
@@ -33,7 +34,7 @@ const Appointment = async (req, res) => {
         "INSERT INTO appointment (organisation, department, name, email, date,appointment_time, pinCode,userId) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING id",
         [patient.organisation, patient.department, patient.name, patient.email, patient.date,newTime, patient.postalCode,Found.rows[0].id]
       );
-      const totalPatients = Count.rows[0].total_p || 0; // Fixing the count retrieval
+      
       const insertedId = booked.rows[0].id; // Fetch inserted appointment ID
 
       // Send confirmation email
@@ -43,7 +44,7 @@ const Appointment = async (req, res) => {
       return res.status(201).json({ msg: "Your Appointment was Successfully Booked", success: true });
     }
 
-    return res.status(401).json({ msg: "Provide Registered Email HERE" });
+    return res.status(401).json({ msg: "Provide Registered Email Either not Found or Incorrect" });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ msg: "Internal Server Error", error });
