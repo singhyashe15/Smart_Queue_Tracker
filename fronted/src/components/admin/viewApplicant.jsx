@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { VStack, Text, Button, Flex, Box, Circle, } from "@chakra-ui/react";
 import { FaCheck } from "react-icons/fa";
-import {axios} from 'axios';
+import axios from 'axios';
 
 export default function ViewApplicant() {
   const { organisation, department } = useParams();
