@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Text, FormControl, Radio, RadioGroup, Input, InputGroup, InputRightElement, Button, HStack } from "@chakra-ui/react";
+import { Box, Text, FormControl, Radio, RadioGroup, Input, InputGroup, InputRightElement, Button, HStack, Spinner } from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [client, setClient] = useState({ email: "", role: "" });
+  const [Loading,setLoading] = useState(false);
   const [hide, setHide] = useState(false);
   const navigate = useNavigate()
   const handlechange = (e) => {
@@ -51,13 +52,15 @@ export default function Login() {
       return toast.error("Please enter the admin key.");
     }
     try {
+      setLoading(true);
       const serverUrl = import.meta.env.VITE_SERVER_URL;
 
       const res = await axios.post(`${serverUrl}/userapi/login`, client, {
         withCredentials: true
       });
-
+      console.log(res)
       if (res.data.success === false) {
+        console.log("Hello")
         toast.error(res.data.msg);
       } else if (res.data.success === true) {
         toast.success(res.data.msg)
@@ -65,10 +68,11 @@ export default function Login() {
         navigate("/home")
       }
     } catch (error) {
-      if (error.response?.status === 402) {
+      if (error.response?.status === 404 || error.response.status === 501) {
         toast.error(error.response.data.msg)
       }
     }
+    setLoading(false);
   }
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" width="100vw">
@@ -114,15 +118,14 @@ export default function Login() {
                 <Input type={hide.pass ? 'text' : 'password'} name='p_key' id="password" placeholder='Password' onChange={handlechange} />
               </InputGroup>
             }
-            {/* <HStack>
-                                <Input type='file' onChange={handleUploadPhoto} />
-                              </HStack> */}
           </FormControl>
           <Button
             m="4"
             colorScheme='teal'
+            disabled={Loading}
+            leftIcon={Loading && <Spinner size="md"/>}
             type='submit' >
-            Submit
+           {Loading ? "Verifying" : "Submit"}
           </Button>
         </form>
       </Box>

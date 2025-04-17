@@ -54,7 +54,7 @@ const Register = () => {
     try {
       const res = await axios.post(`${serverUrl}/userapi/register`, client);
 
-      if (res.status != 201) {
+      if (res.data.success === false) {
         toast.error(res.data.msg);
       } else {
         toast.success(res.data.msg)

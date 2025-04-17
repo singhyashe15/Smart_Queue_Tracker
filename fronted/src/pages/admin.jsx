@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Input, InputGroup, FormControl, InputRightElement, Select, Button, Text} from "@chakra-ui/react";
+import { Box, Input, InputGroup, FormControl, InputRightElement, Select, Button, Text, Spinner} from "@chakra-ui/react";
 import { FaEnvelope } from "react-icons/fa";
 import axios from "axios"
 import toast from "react-hot-toast";
@@ -13,7 +13,8 @@ const Bank = [
 ];
 
 const Government = [
-  { name: "SDO/BDO" },
+  { name: "SDO" },
+  {name:"BDO"},
   { name: "LICENSE" }
 ];
 
@@ -30,6 +31,7 @@ const subOrg = {
 
 export default function Admin() {
   const [admin, setadmin] = useState({ name: "", email: "", organisation: "", department: "" });
+  const [Laoding,setLoading] = useState(false)
   const navigate = useNavigate();
   const handlechange = (e) => {
     setadmin((prev) => {
@@ -44,6 +46,7 @@ export default function Admin() {
     e.preventDefault()
     console.log(admin)
     const serverUrl = import.meta.env.VITE_SERVER_URL;
+    setLoading(true)
     try {
       const res = await axios.post(`${serverUrl}/adminapi/adminKey`, admin)
       if(res.data.success){
@@ -55,6 +58,7 @@ export default function Admin() {
     } catch (error) {
       toast.error(error);
     }
+    setLoading(false)
   }
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" width="100vw">
@@ -86,8 +90,10 @@ export default function Admin() {
           <Button
             m="4"
             colorScheme='teal'
+            disabled={Laoding}
+            leftIcon={Laoding && <Spinner size="md"/>}
             type='submit' >
-            Generate Id
+           {Laoding ? "Generating" : "Generate Id"}
           </Button>
         </form>
       </Box>
