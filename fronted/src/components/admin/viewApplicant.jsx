@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { FaCheck, FaUserAlt } from "react-icons/fa";
 import axios from "axios";
+import moment from "moment"
 
 export default function ViewApplicant() {
   const { organisation, department } = useParams();
@@ -63,7 +64,7 @@ export default function ViewApplicant() {
   const lineColor = useColorModeValue("gray.300", "gray.600");
 
   return (
-    <Box p={6}>
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" width="100vw">
       <Heading mb={6} textAlign="center">
         Appointment Queue
       </Heading>
@@ -73,7 +74,7 @@ export default function ViewApplicant() {
         </Flex>
       ) : (
         <VStack align="stretch" spacing={6} mx="auto" maxW="lg">
-          {data?.map((item, index) => (
+          {data?.map((patient, index) => (
             <Flex key={index} align="start" position="relative">
               <VStack spacing={0} mr={4} align="center">
                 <Circle size="16px" bg="green.400" />
@@ -85,21 +86,21 @@ export default function ViewApplicant() {
                   <HStack spacing={3}>
                     <Icon as={FaUserAlt} boxSize={5} color="teal.500" />
                     <Text fontSize="lg" fontWeight="bold">
-                      {item?.name}
+                      {patient?.name}
                     </Text>
-                    <Badge colorScheme="purple">Age: {item?.age}</Badge>
+                    <Badge colorScheme="purple">Age: {patient?.age}</Badge>
                   </HStack>
                   <Button
                     size="sm"
                     colorScheme="teal"
                     leftIcon={<FaCheck />}
-                    onClick={() => handleCheckUp(item?.id)}
+                    onClick={() => handleCheckUp(patient?.id)}
                   >
                     Check-up Done
                   </Button>
                 </HStack>
-                <Text fontSize="sm" mt={2}>Date: {item?.date}</Text>
-                <Text fontSize="sm">Time: {item?.appointment_time}</Text>
+                <Text>Date: {moment(patient?.date).format("DD-MM-YYYY")}</Text>
+                <Text fontSize="sm">Time: {patient?.appointment_time}</Text>
               </Box>
             </Flex>
           ))}

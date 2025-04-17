@@ -1,4 +1,4 @@
-import pool from "../../config/db";
+import pool from "../../config/db.js";
 
 const deletePatient = async(req,res)=>{
   const {id} = req.body;
