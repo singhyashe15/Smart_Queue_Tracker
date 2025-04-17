@@ -7,6 +7,7 @@ const appointment = async () => {
         id SERIAL PRIMARY KEY,
         name VARCHAR(50) NOT NULL,
         email VARCHAR(50) NOT NULL,
+        age INT NOT NULL,
         organisation VARCHAR(100) NOT NULL,
         department VARCHAR(100) NOT NULL,
         date DATE NOT NULL,

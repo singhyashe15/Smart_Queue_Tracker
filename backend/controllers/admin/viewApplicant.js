@@ -8,7 +8,7 @@ const viewApplicant = async(req,res)=>{
     if(data.rowCount > 0){
       return res.status(201).json({msg:"Fetched Data Successfully",data:data.rows,success:true});
     }
-    return res.status(402).json({msg:"No data Found",success:true});
+    return res.status(404).json({msg:"No data Found",success:true});
   } catch (error) {
     return res.status(501).json({msg:error,success:false});
   }
