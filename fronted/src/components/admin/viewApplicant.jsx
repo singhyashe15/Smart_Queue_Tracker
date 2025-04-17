@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { VStack, Text, Button, Flex, Box, Circle, } from "@chakra-ui/react";
 import { FaCheck } from "react-icons/fa";
+import {axios} from 'axios';
 
 export default function ViewApplicant() {
   const { organisation, department } = useParams();
@@ -11,6 +12,7 @@ export default function ViewApplicant() {
   const fetchApplicant = async (organisation, department) => {
     const url = import.meta.env.VITE_SERVER_URL;
     const res = await axios.get(`${url}/adminapi/viewApplicant/${organisation}/${department}`);
+    console.log(res.data.data)
     return res.status === 201 ? res.data.data : [];
   }
 
