@@ -64,7 +64,7 @@ const Register = () => {
           name: res.data.name
         }
         localStorage.setItem("user", JSON.stringify(user_info))
-        navigate("/login")
+        navigate("/login", {replace: true})
       }
     } catch (error) {
       toast.error(error.response.data.msg)
