@@ -3,7 +3,7 @@ import { Box, Text, FormControl, Radio, RadioGroup, Input, InputGroup, InputRigh
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [client, setClient] = useState({ email: "", role: "" });
@@ -65,7 +65,7 @@ export default function Login() {
       } else if (res.data.success === true) {
         toast.success(res.data.msg)
         localStorage.setItem("token", res.data.token)
-        navigate("/home")
+        navigate("/home" , {replace : true})
       }
     } catch (error) {
       if (error.response?.status === 404 || error.response.status === 501) {
