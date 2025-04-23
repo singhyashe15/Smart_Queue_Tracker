@@ -1,26 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Flex,
-  VStack,
-  HStack,
-  Text,
-  IconButton,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
-  Button,
-  Tooltip,
-  useBreakpointValue,
-  Card,
-  CardBody,
-  Stack
-} from "@chakra-ui/react";
+import {Box,Flex,VStack,HStack,Text,IconButton,useDisclosure,Modal, ModalOverlay,ModalContent,ModalHeader,ModalBody,ModalFooter,Input,Button,Tooltip,useBreakpointValue,Card,CardBody} from "@chakra-ui/react";
 import { FaComments, FaArrowUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -58,6 +37,7 @@ export default function UserComponent() {
       const res = await axios.post(`${serverUrl}/userapi/chat`, { prompt: msg });
       const botMessage = { sender: "bot", text: res.data.reply };
       setMessages((prev) => [...prev, botMessage]);
+      setInput(true)
     } catch (error) {
       const botMessage = { sender: "bot", text: "Something went wrong. Please try again." };
       setMessages((prev) => [...prev, botMessage]);
@@ -112,10 +92,10 @@ export default function UserComponent() {
 
       <Modal isOpen={isOpen} onClose={onClose} size="sm" motionPreset="slideInBottom">
         <ModalOverlay />
-        <ModalContent rounded="xl" overflow="hidden">
+        <ModalContent rounded="xl" overflow="hidden"  p={4} maxW="350px" maxH="600px">
           <ModalHeader textAlign="center" bg="gray.100">AI Chat Bot</ModalHeader>
           <ModalBody>
-            <VStack align="stretch" spacing={3} maxH="300px" overflowY="auto">
+            <VStack align="stretch" spacing={3} maxH="300px" overflowY="auto" mt="4">
               {messages.map((msg, idx) => (
                 <Flex
                   key={idx}
@@ -129,7 +109,7 @@ export default function UserComponent() {
                 >
                   {msg.sender === "bot" && (
                     <Text fontSize="sm" fontWeight="semibold" color="gray.600">
-                      Fin
+                      Bot
                     </Text>
                   )}
                   <Text>{msg.text}</Text>
@@ -141,7 +121,6 @@ export default function UserComponent() {
                   {customQ.map((q, i) => (
                     <Button
                       key={i}
-                      variant="outline"
                       colorScheme="gray"
                       size="sm"
                       onClick={() => handleSubmit(q.ques)}
