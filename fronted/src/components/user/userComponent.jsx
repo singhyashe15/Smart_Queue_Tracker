@@ -1,31 +1,29 @@
 import React, { useState } from "react";
-import {Box,Flex,VStack,HStack,Text,IconButton,useDisclosure,Modal, ModalOverlay,ModalContent,ModalHeader,ModalBody,ModalFooter,Input,Button,Tooltip,useBreakpointValue,Card,CardBody} from "@chakra-ui/react";
+import { Box, Flex, VStack, HStack, Text, IconButton, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Button, Tooltip, useBreakpointValue, Card, CardBody } from "@chakra-ui/react";
 import { FaComments, FaArrowUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { CardProduct } from "../../data/data.js";
+import { customQ,Appointment,CardProduct } from "../../data/data.js";
 
 const MotionIconButton = motion(IconButton);
 const MotionBox = motion(Box);
 
-const customQ = [
-  { ques: "how to login" },
-  { ques: "book.*appointment" },
-  { ques: "cancel.*appointment" },
-  { ques: "how long.*wait" },
-  { ques: "queue status" },
-];
-
 export default function UserComponent() {
+  const stepKeys = ["name", "email", "age", "postalCode", "organisation", "department", "date"];
+  const [data, setData] = useState({ name: "", email: "", age: "", postalCode: 0, organisation: "", department: "", date: "" });
   const [input, setInput] = useState(false);
   const [messages, setMessages] = useState([]);
   const [prompt, setPrompt] = useState("");
+  const [step, setStep] = useState(0);
   const StackComponent = useBreakpointValue({ base: VStack, md: HStack });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
-  const handlePrompt = (e) => setPrompt(e.target.value);
+  const handleBotReply = () => {
+    setMessages((prev) => [...prev, { sender: "bot", text: Appointment[step].prompt }]);
+    setStep((prev) => prev + 1);
+  };
 
   const handleSubmit = async (msg) => {
     const userMessage = { sender: "user", text: msg };
@@ -44,7 +42,34 @@ export default function UserComponent() {
     }
   };
 
+  const handleData = async (prompt) => {
+    setMessages((prev) => [...prev, { sender: "user", text: prompt }]);
+    if (prompt === 'y') {
+      console.log(data)
+      setPrompt("");
+      try {
+        const serverUrl = import.meta.env.VITE_SERVER_URL;
+        const res = await axios.post(`${serverUrl}/userapi/appointment`, data);
+        setMessages((prev) => [...prev, { sender: "bot", text: res.data.msg }]);
+      } catch (error) {
+        console.log(error)
+        setMessages((prev) => [...prev, { sender: "bot", text: "Provided email not Found" }]);
+      }
+    } else {
+      setData(prev => ({
+        ...prev,
+        [stepKeys[step - 1]]: prompt
+      }));
+      setPrompt("");
+      handleBotReply();
+    }
+  }
+
+  const handlePrompt = (e) => {
+    setPrompt(e.target.value)
+  }
   const handleroute = () => navigate("/viewSchedule");
+
 
   return (
     <Flex direction="column" align="center" p={6} gap={8} mt="10">
@@ -92,10 +117,27 @@ export default function UserComponent() {
 
       <Modal isOpen={isOpen} onClose={onClose} size="sm" motionPreset="slideInBottom">
         <ModalOverlay />
-        <ModalContent rounded="xl" overflow="hidden"  p={4} maxW="350px" maxH="600px">
+        <ModalContent rounded="xl" overflow="hidden" p={4} maxW="350px" maxH="800px">
           <ModalHeader textAlign="center" bg="gray.100">AI Chat Bot</ModalHeader>
           <ModalBody>
-            <VStack align="stretch" spacing={3} maxH="300px" overflowY="auto" mt="4">
+            <VStack align="stretch" spacing={3} overflowY="auto" mt="4">
+              <Flex
+                alignSelf="flex-start"
+                direction="column"
+                maxW="80%"
+                bg="gray.100"
+                p={3}
+                rounded="lg"
+                boxShadow="base"
+              >
+
+                <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+                  Bot
+                </Text>
+
+                <Text>Hi, I'm QareBot!
+                  Here are the queries I can help you with:</Text>
+              </Flex>
               {messages.map((msg, idx) => (
                 <Flex
                   key={idx}
@@ -128,11 +170,13 @@ export default function UserComponent() {
                       {q.ques}
                     </Button>
                   ))}
-                  <Button size="sm" colorScheme="teal" onClick={() => setInput(true)}>
-                    Ask something else
+                  <Button size="sm" colorScheme="teal" onClick={() => { setInput(true), handleBotReply() }} >
+                    Wanna need Appointment
                   </Button>
                 </VStack>
               )}
+
+
             </VStack>
           </ModalBody>
           {input && (
@@ -146,7 +190,7 @@ export default function UserComponent() {
               />
               <IconButton
                 icon={<FaArrowUp />}
-                onClick={() => handleSubmit(prompt)}
+                onClick={() => handleData(prompt)}
                 colorScheme="teal"
                 rounded="full"
               />
