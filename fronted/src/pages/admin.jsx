@@ -51,7 +51,7 @@ export default function Admin() {
       const res = await axios.post(`${serverUrl}/adminapi/adminKey`, admin)
       if(res.data.success){
         toast.success(res.data.msg);
-        navigate("/");
+        navigate("/", { replace : true});
       }else{
         toast.error(res.data.msg);
       }
