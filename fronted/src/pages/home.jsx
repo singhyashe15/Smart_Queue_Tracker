@@ -5,7 +5,7 @@ import UserComponent from "../components/user/userComponent.jsx";
 import AdminComponent from "../components/admin/adminComponent.jsx";
 import ProtectedAdminRoute from "../components/protectedAdmin.jsx";
 import { FaBars } from "react-icons/fa";
-
+import { BiLogOut } from 'react-icons/bi'
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -31,15 +31,15 @@ export default function Home() {
 
         {/* Navigation Links */}
         {user === null && <HStack spacing={5} display={{ base: "none", md: "flex" }}>
-          <Link variant="plain" href="/admin" _hover={{ color: 'white' }} color="white">Admin</Link>
-          <Link variant="plain" href="/register" _hover={{ color: 'white' }} color="white">Register</Link>
-          <Link variant="plain" href="/login" _hover={{ color: 'white' }} color="white">Login</Link>
+          <Link variant="plain" href="/admin" _hover={{ color: 'white',textDecoration: "none" }} color="white">Admin</Link>
+          <Link variant="plain" href="/register" _hover={{ color: 'white',textDecoration: "none" }} color="white">Register</Link>
+          <Link variant="plain" href="/login" _hover={{ color: 'white',textDecoration: "none" }} color="white">Login</Link>
         </HStack>
         }
         {
           user?.id > 0 &&
           <HStack display={{ base: "none", md: "flex" }}>
-            <Link variant="plain" href="/logout" _hover={{ color: 'white' }} color="white">Logout</Link>
+            <Link variant="plain" href="/logout" _hover={{ color: 'white',textDecoration: "none" }} color="white">Logout</Link>
           </HStack>
         }
 
@@ -59,12 +59,23 @@ export default function Home() {
           <DrawerCloseButton />
           {user !== null && <DrawerHeader>Hey,{user?.name}</DrawerHeader>}
           <DrawerBody>
-            {user !== null && <Link display="block" mb={2} href="/logout">Logout</Link>}
+            {user !== null &&
+              <Link
+                display="block"
+                mb={2}
+                href="/logout"
+                _hover={{ textDecoration: "none", color: "red.500" }}
+              >
+                <HStack spacing={2}>
+                  <BiLogOut size={20} />
+                  <Text>Logout</Text>
+                </HStack>
+              </Link>}
             {user === null &&
               <VStack align="left" spacing="4" pt="8">
-                <Link variant="plain" href="/admin"  >Admin</Link>
-                <Link variant="plain" href="/register" >Register</Link>
-                <Link variant="plain" href="/login" >Login</Link>
+                <Link variant="plain" href="/admin" _hover={{textDecoration: "none"}} >Admin</Link>
+                <Link variant="plain" href="/register" _hover={{textDecoration: "none"}} >Register</Link>
+                <Link variant="plain" href="/login" _hover={{textDecoration: "none"}} >Login</Link>
               </VStack>
             }
           </DrawerBody>
@@ -74,7 +85,7 @@ export default function Home() {
       {/* Conditional Rendering Based on User Role */}
       <Flex align="center" justify="center">
         {user === null ? (
-          <HomeComponent />
+          <UserComponent />
         ) : user.role === "user" ? (
           <UserComponent />
         ) : (

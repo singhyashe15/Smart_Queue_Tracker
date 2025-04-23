@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   Card, Flex, Heading, CardBody, Text, Tag, TagLabel, TagLeftIcon,
   useDisclosure, Modal, ModalOverlay, ModalContent, ModalCloseButton,
-  Input, ModalHeader, Button, Spinner, useBreakpointValue,
+  Input, ModalHeader, Button, useBreakpointValue,
   VStack, HStack, CardFooter, Icon
 } from "@chakra-ui/react";
 import { FaTimesCircle, FaHeartbeat } from "react-icons/fa";
@@ -10,28 +10,7 @@ import { RiShieldCheckFill } from 'react-icons/ri';
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-const Bank = [
-  { name: "Customer Service" },
-  { name: "Cash Deposit & Withdrawal Counters" },
-  { name: "Loan Department" },
-  { name: "Locker Services" }
-];
-
-const Government = [
-  { name: "Regional Transport Office" },
-  { name: "Passport Seva Kendra" },
-  { name: "Municipal Corporations" },
-  { name: "Income Tax" }
-];
-
-const Hospital = [
-  { name: "OPD" },
-  { name: "Diagnostic & Lab Services" },
-  { name: "Vaccination Center / Immunization Unit" }
-];
-
-const sub_dept = { Bank, Hospital, Government };
+import { Bank,Government,Hospital,sub_dept } from "../../data/data.js";
 
 export default function AdminComponent() {
   const [key, setKey] = useState(() => {
