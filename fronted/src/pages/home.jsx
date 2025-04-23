@@ -85,7 +85,7 @@ export default function Home() {
       {/* Conditional Rendering Based on User Role */}
       <Flex align="center" justify="center">
         {user === null ? (
-          <UserComponent />
+          <HomeComponent />
         ) : user.role === "user" ? (
           <UserComponent />
         ) : (
