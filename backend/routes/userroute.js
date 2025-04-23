@@ -4,6 +4,7 @@ import login from "../controllers/user/login.js";
 import Appointment from "../controllers/user/appointment.js";
 import liveStatus from "../controllers/user/liveStatus.js";
 import deleteAppointment from "../controllers/user/deleteAppointment.js";
+import Chat from "../controllers/user/chat.js";
  // Ensure the file extension
 
 const router = express.Router();
@@ -18,5 +19,7 @@ router.post("/appointment",Appointment);
 router.get('/livestatus/:id',liveStatus);
 // for deleting appointment
 router.delete('/deleteAppointment',deleteAppointment)
+// for chat-bot 
+router.post('/chat',Chat);
 
 export default router;
