@@ -88,3 +88,22 @@ export const CardProduct = [
   { id: 3, name: "Bank", icon: FaPiggyBank },
   { id: 4, name: "Hospital", icon:FaHospital  }
 ];
+
+export const customQ = [
+  { ques: "how to login" },
+  { ques: "book.*appointment" },
+  { ques: "cancel.*appointment" },
+  { ques: "how long.*wait" },
+  { ques: "queue status" },
+];
+
+export const Appointment = [
+  { prompt: "Enter Patient Name" },
+  { prompt: "Enter Email" },
+  { prompt: "Enter Age" },
+  { prompt: "Enter PinCode" },
+  { prompt: "Enter Sub-Organisation" },
+  { prompt: "Enter Department" },
+  { prompt: "Enter date Of Appointment : YYYY-MM-DD" },
+  { prompt: "Submit Enter :  y" }
+]
