@@ -1,10 +1,31 @@
 import React, { useState } from "react";
-import { Box, Flex, HStack, Card, Stack, VStack, Spacer, CardBody, useBreakpointValue, Text, Icon, Tooltip, IconButton, useDisclosure, Modal, ModalBody, ModalHeader, ModalCloseButton, ModalContent, ModalOverlay, ModalFooter, Button, Input } from "@chakra-ui/react";
-import { FaComments, FaArrowUp } from 'react-icons/fa';
+import {
+  Box,
+  Flex,
+  VStack,
+  HStack,
+  Text,
+  IconButton,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  Button,
+  Tooltip,
+  useBreakpointValue,
+  Card,
+  CardBody,
+  Stack
+} from "@chakra-ui/react";
+import { FaComments, FaArrowUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { CardProduct } from '../../data/data.js'
-import axios from 'axios'
+import axios from "axios";
+import { CardProduct } from "../../data/data.js";
 
 const MotionIconButton = motion(IconButton);
 const MotionBox = motion(Box);
@@ -14,149 +35,144 @@ const customQ = [
   { ques: "book.*appointment" },
   { ques: "cancel.*appointment" },
   { ques: "how long.*wait" },
-  { ques: "queue status" }
-]
+  { ques: "queue status" },
+];
 
 export default function UserComponent() {
   const [input, setInput] = useState(false);
   const [messages, setMessages] = useState([]);
   const [prompt, setPrompt] = useState("");
   const StackComponent = useBreakpointValue({ base: VStack, md: HStack });
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
-  const handlePrompt = (e) => {
-    setPrompt(e.target.value)
-  };
+  const handlePrompt = (e) => setPrompt(e.target.value);
 
-  const handleSubmit = async () => {
-    const userMessage = { sender: 'user', text: prompt };
-    setMessages([...messages, userMessage]);
+  const handleSubmit = async (msg) => {
+    const userMessage = { sender: "user", text: msg };
+    setMessages((prev) => [...prev, userMessage]);
     setPrompt("");
     const serverUrl = import.meta.env.VITE_SERVER_URL;
 
     try {
-      const res = await axios.post(`${serverUrl}/userapi/chat`, {
-        prompt: prompt,
-      });
-
-      const botMessage = { sender: 'bot', text: res.data.reply };
-      setMessages(prev => [...prev, botMessage]);
-
-      return res.data.msg; // ✅ return the response message
+      const res = await axios.post(`${serverUrl}/userapi/chat`, { prompt: msg });
+      const botMessage = { sender: "bot", text: res.data.reply };
+      setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      if (error.status === 402) {
-        const botMessage = { sender: 'bot', text: "Fill the query first !!" };
-        setMessages(prev => [...prev, botMessage]);
-      }
-      console.error("Chat Error:", error);
-      return "Sorry, something went wrong.";
+      const botMessage = { sender: "bot", text: "Something went wrong. Please try again." };
+      setMessages((prev) => [...prev, botMessage]);
     }
   };
 
-  const handleroute = () => {
-    navigate("/viewSchedule");
-  };
+  const handleroute = () => navigate("/viewSchedule");
 
   return (
-    <Flex align="center" justify="center" w="full" mt="20">
-      <StackComponent spacing={4}>
+    <Flex direction="column" align="center" p={6} gap={8} mt="10">
+      <StackComponent spacing={6} wrap="wrap" justify="center">
         {CardProduct.map((product) => (
           <MotionBox
             key={product.id}
-            w="250px"
-            p={4}
-            borderWidth="md"
-            borderRadius="lg"
-            boxShadow="lg"
-            bg="blue.500"
-            cursor="pointer"
-            whileHover={{ scale: 1.1 }}
+            as={Card}
+            maxW="xs"
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => handleroute()} // Click anywhere on the box to navigate
+            onClick={handleroute}
+            cursor="pointer"
+            bg="white"
+            boxShadow="lg"
+            rounded="2xl"
+            p={5}
           >
-            <Card maxW="sm">
-              <CardBody>
-                <Stack mt="6" spacing="3" align="center">
-                  <Icon as={product.icon} boxSize={8} color="teal.300" />
-                  <Text fontSize="xl" fontWeight="bold">
-                    {product.name}
-                  </Text>
-                </Stack>
-              </CardBody>
-            </Card>
+            <CardBody>
+              <VStack spacing={3} align="center">
+                <Box as={product.icon} boxSize={10} color="teal.400" />
+                <Text fontSize="lg" fontWeight="bold" color="gray.700">
+                  {product.name}
+                </Text>
+              </VStack>
+            </CardBody>
           </MotionBox>
         ))}
       </StackComponent>
 
-      <Box position="fixed" bottom="30px" right="30px" zIndex="10">
-        <Tooltip label="Ask Bot" placement="left">
-          <MotionIconButton
-            icon={<FaComments />}
-            colorScheme="teal"
-            borderRadius="full"
-            size="lg"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-            aria-label="Chatbot"
-            boxShadow="lg"
-            onClick={() => onOpen()}
-          />
-        </Tooltip>
-      </Box>
-      <Modal isOpen={isOpen} onClose={onClose} position="fixed">
+      <Tooltip label="Chat with Bot" placement="left">
+        <MotionIconButton
+          icon={<FaComments />}
+          colorScheme="teal"
+          size="lg"
+          rounded="full"
+          onClick={onOpen}
+          whileHover={{ scale: 1.1 }}
+          boxShadow="xl"
+          position="fixed"
+          bottom="30px"
+          right="30px"
+        />
+      </Tooltip>
+
+      <Modal isOpen={isOpen} onClose={onClose} size="sm" motionPreset="slideInBottom">
         <ModalOverlay />
-        <ModalCloseButton />
-        <ModalContent p={4} maxW="350px" maxH="600px">
-          <ModalHeader textAlign="center" bg="gray.200" rounded="full">Chat Bot</ModalHeader>
-          <ModalBody >
-            <VStack
-              flex="1"
-              spacing={3}
-              p={4}
-              overflowY="auto"
-              align="stretch"
-              bg="gray.50"
-            >
+        <ModalContent rounded="xl" overflow="hidden">
+          <ModalHeader textAlign="center" bg="gray.100">AI Chat Bot</ModalHeader>
+          <ModalBody>
+            <VStack align="stretch" spacing={3} maxH="300px" overflowY="auto">
               {messages.map((msg, idx) => (
                 <Flex
                   key={idx}
                   alignSelf={msg.sender === "user" ? "flex-end" : "flex-start"}
+                  direction="column"
                   maxW="80%"
-                  bg={msg.sender === "user" ? "teal.100" : "gray.200"}
-                  borderRadius="md"
+                  bg={msg.sender === "user" ? "teal.100" : "gray.100"}
                   p={3}
-                  boxShadow="sm"
+                  rounded="lg"
+                  boxShadow="base"
                 >
-                  {msg.sender === "bot"}<Text fontWeight="semibold">Bot</Text>
+                  {msg.sender === "bot" && (
+                    <Text fontSize="sm" fontWeight="semibold" color="gray.600">
+                      Fin
+                    </Text>
+                  )}
                   <Text>{msg.text}</Text>
                 </Flex>
               ))}
 
-              {messages.length === 0 && !input &&
-                <VStack p="4" cursor="pointer" spacing="4" >
-                  {
-                    customQ.map((question, index) => (
-
-                      <Box key={index} p="4" bg="gray.300" rounded="full" >{question.ques}</Box>
-                    ))
-                  }
-                  <Box p="4" bg="gray.300" rounded="full" onClick={() => setInput(true)}>Others</Box>
+              {!input && messages.length === 0 && (
+                <VStack spacing={3}>
+                  {customQ.map((q, i) => (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      colorScheme="gray"
+                      size="sm"
+                      onClick={() => handleSubmit(q.ques)}
+                    >
+                      {q.ques}
+                    </Button>
+                  ))}
+                  <Button size="sm" colorScheme="teal" onClick={() => setInput(true)}>
+                    Ask something else
+                  </Button>
                 </VStack>
-              }
-              <Spacer />
+              )}
             </VStack>
           </ModalBody>
-          {input &&
-            <ModalFooter justifyContent="space-between" bg="transparent" border="1px" borderColor="black" rounded="full">
-              <Input border="none" focusBorderColor="transparent" value={prompt} onChange={handlePrompt} />
-              <IconButton
-                icon={<FaArrowUp />}
-                bg="gray.300"
+          {input && (
+            <ModalFooter as={Flex} gap={2}>
+              <Input
+                placeholder="Type your message..."
+                value={prompt}
+                onChange={handlePrompt}
+                flex={1}
                 rounded="full"
               />
-            </ModalFooter>}
+              <IconButton
+                icon={<FaArrowUp />}
+                onClick={() => handleSubmit(prompt)}
+                colorScheme="teal"
+                rounded="full"
+              />
+            </ModalFooter>
+          )}
         </ModalContent>
       </Modal>
     </Flex>
