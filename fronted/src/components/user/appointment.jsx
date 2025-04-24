@@ -23,7 +23,9 @@ export default function Appointment() {
 
   // add the details
   const handleChange = (e) => {
-    console.log(e.target.value)
+    if(e.target.name === 'age' && (e.target.value >= 100 || (e.target.value >= 'a' && e.target.value <= 'z'))){
+      return toast.error("Enter valid Age")
+    }
     setDetails((prev) => {
       return {
         ...prev,
@@ -40,7 +42,7 @@ export default function Appointment() {
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     const res = await axios.post(`${serverUrl}/userapi/appointment`, detail)
     try {
-      if (res.data.sucess === true) {
+      if (res.data.success === true) {
         toast.success(res.data.msg);
         navigate("/")
       } else {
@@ -82,7 +84,7 @@ export default function Appointment() {
             {step === 3 && (
               <>
                 <InputGroup>
-                  <Input type="date" placeholder="Enter date of appointment" onChange={handleChange}/>
+                  <Input type="date" placeholder="Enter date of appointment" name="date" onChange={handleChange}/>
                   <InputRightElement pointerEvents="none">
                     <Icon as={FaRegCalendarAlt} color="gray.400" />
                   </InputRightElement>
