@@ -4,7 +4,7 @@ import { FaComments, FaArrowUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { customQ,Appointment,CardProduct } from "../../data/data.js";
+import { customQ, Appointment, CardProduct } from "../../data/data.js";
 
 const MotionIconButton = motion(IconButton);
 const MotionBox = motion(Box);
@@ -68,7 +68,10 @@ export default function UserComponent() {
   const handlePrompt = (e) => {
     setPrompt(e.target.value)
   }
-  const handleroute = () => navigate("/viewSchedule");
+  const handleroute = (orgs) => {
+    console.log(orgs)
+    navigate(`/viewSchedule/${orgs}`)
+  };
 
 
   return (
@@ -81,7 +84,7 @@ export default function UserComponent() {
             maxW="xs"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={handleroute}
+            onClick={()=>handleroute(product.name)}
             cursor="pointer"
             bg="white"
             boxShadow="lg"
@@ -99,6 +102,41 @@ export default function UserComponent() {
           </MotionBox>
         ))}
       </StackComponent>
+      <Box
+        w="100%"
+        overflowX="auto"
+        mt={10}
+        px={4}
+        sx={{
+          "&::-webkit-scrollbar": {
+            height: "8px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "#CBD5E0",
+            borderRadius: "4px",
+          },
+          scrollbarWidth: "thin",
+          scrollBehavior: "smooth",
+        }}
+      >
+        <Flex gap={4} minW="max-content">
+          {["queue1.jpg", "queue2.jpg", "queue3.png", "queue4.jpg"].map((img, i) => (
+            <Box
+              key={i}
+              w="280px"
+              h="180px"
+              bgImage={`url(/${img})`}
+              bgSize="cover"
+              bgPosition="center"
+              rounded="xl"
+              boxShadow="md"
+              flexShrink={0}
+              scrollSnapAlign="start"
+            />
+          ))}
+        </Flex>
+      </Box>
+
 
       <Tooltip label="Chat with Bot" placement="left">
         <MotionIconButton
@@ -117,10 +155,13 @@ export default function UserComponent() {
 
       <Modal isOpen={isOpen} onClose={onClose} size="sm" motionPreset="slideInBottom">
         <ModalOverlay />
-        <ModalContent rounded="xl" overflow="hidden" p={4} maxW="350px" maxH="800px">
-          <ModalHeader textAlign="center" bg="gray.100">AI Chat Bot</ModalHeader>
-          <ModalBody>
-            <VStack align="stretch" spacing={3} overflowY="auto" mt="4">
+        <ModalContent rounded="xl" p={0} w="100%" maxW="350px" h="90vh">
+          <ModalHeader textAlign="center" bg="gray.100" p={4}>
+            AI Chat Bot
+          </ModalHeader>
+
+          <ModalBody p={4} overflowY="auto">
+            <VStack align="stretch" spacing={3}>
               <Flex
                 alignSelf="flex-start"
                 direction="column"
@@ -130,14 +171,14 @@ export default function UserComponent() {
                 rounded="lg"
                 boxShadow="base"
               >
-
                 <Text fontSize="sm" fontWeight="semibold" color="gray.600">
                   Bot
                 </Text>
-
-                <Text>Hi, I'm QareBot!
-                  Here are the queries I can help you with:</Text>
+                <Text>
+                  Hi, I'm QareBot! Here are the queries I can help you with:
+                </Text>
               </Flex>
+
               {messages.map((msg, idx) => (
                 <Flex
                   key={idx}
@@ -170,15 +211,21 @@ export default function UserComponent() {
                       {q.ques}
                     </Button>
                   ))}
-                  <Button size="sm" colorScheme="teal" onClick={() => { setInput(true), handleBotReply() }} >
+                  <Button
+                    size="sm"
+                    colorScheme="teal"
+                    onClick={() => {
+                      setInput(true);
+                      handleBotReply();
+                    }}
+                  >
                     Wanna need Appointment
                   </Button>
                 </VStack>
               )}
-
-
             </VStack>
           </ModalBody>
+
           {input && (
             <ModalFooter as={Flex} gap={2}>
               <Input
