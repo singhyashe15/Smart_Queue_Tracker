@@ -78,6 +78,34 @@ export const Hospital = [
   { name: "Vaccination Center / Immunization Unit" }
 ];
 
+export const Organisation = {
+  Bank: [
+    { name: "PNB",location:"Makhla" },
+    { name: "UCO",location:"Makhla"  },
+    { name: "SBI",location:"Makhla"  },
+    { name: "CBI" ,location:"Makhla" }
+  ],
+  Hospital: [
+    { name: "Rajbari",location:"Uttarpara"  },
+    { name: "WeCare",location:"Belur"  },
+    { name: "FortisHealthcare" ,location:"Kolkata" },
+    { name: "NarayanaHealth",location:"Kolkata"  }
+  ],
+  Government: [
+    { name: "Municipal Office",location:"Uttarpara Kotrung(M)"  },
+    { name: "PassportSevaKendra",location:"Serampore"  },
+    { name: "IncomeTaxDepartment",location:"Serampore"  },
+    { name: "RTOOffice",location:"Serampore"  }
+  ],
+  Institution: [
+    { name: "IITDelhi",location:"Delhi"  },
+    { name: "NITTrichy",location:"Trichy"  },
+    { name: "IIMBangalore",location:"Bangalore"  },
+    { name: "DelhiUniversity",location:"Delhi" }
+  ]
+};
+
+
 export const sub_dept = { Bank, Hospital, Government };
 
 import { FaLandmark, FaPiggyBank, FaSchool, FaHospital } from "react-icons/fa";
