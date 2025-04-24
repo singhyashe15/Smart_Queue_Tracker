@@ -15,6 +15,7 @@ import Error from '../pages/error.jsx';
 import ViewApplicant from '../components/admin/viewApplicant.jsx';
 import Logout from '../components/logout.jsx';
 import Dashboard from '../components/admin/dashboard.jsx';
+import UserDashboard from '../components/user/dashboard.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
     path: 'dashboard',
     element: (
       <ProtectedRoute>
-        <Dashboard />
+        <UserDashboard />
       </ProtectedRoute>
     ),
     errorElement: <Error />
@@ -72,7 +73,7 @@ const router = createBrowserRouter([
     errorElement: <Error />
   },
   {
-    path: 'viewStatus',
+    path: 'viewStatus/:orgs',
     element: (
       <ProtectedRoute>
         <ViewStatus />
@@ -103,6 +104,15 @@ const router = createBrowserRouter([
     element: (
       <ProtectedAdminRoute>
         <AdminComponent />
+      </ProtectedAdminRoute>
+    ),
+    errorElement: <Error />
+  },
+  {
+    path: 'admindashboard/:organisation',
+    element: (
+      <ProtectedAdminRoute>
+        <Dashboard />
       </ProtectedAdminRoute>
     ),
     errorElement: <Error />
