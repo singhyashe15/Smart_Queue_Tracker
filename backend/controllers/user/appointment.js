@@ -8,6 +8,7 @@ const Appointment = async (req, res) => {
   const date = new Date();
   try {
     const patient = req.body;
+    console.log(patient)
     if(patient.date < date){
       return res.status(401).json({msg:"Date cannot be less than current date"})
     }
@@ -31,7 +32,7 @@ const Appointment = async (req, res) => {
       console.log("New Appointment Time:", newTime);
       // Insert the appointment and return the inserted ID
       const booked = await pool.query(
-        "INSERT INTO appointment (organisation, department, name, email,age, date,appointment_time, pinCode,userId) VALUES ($1, $2, $3, $4, $5, $6,$7,$8) RETURNING id",
+        "INSERT INTO appointment (organisation, department, name, email,age, date,appointment_time, pinCode,userId) VALUES ($1, $2, $3, $4, $5, $6,$7,$8,$9) RETURNING id",
         [patient.organisation, patient.department, patient.name, patient.email,Number(patient.age), patient.date,newTime, patient.postalCode,Found.rows[0].id]
       );
       
