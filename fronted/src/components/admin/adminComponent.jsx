@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import {
-  Card, Flex, Heading, CardBody, Text, Tag, TagLabel, TagLeftIcon,
-  useDisclosure, Modal, ModalOverlay, ModalContent, ModalCloseButton,
-  Input, ModalHeader, Button, useBreakpointValue,
-  VStack, HStack, CardFooter, Icon
-} from "@chakra-ui/react";
-import { FaTimesCircle, FaHeartbeat } from "react-icons/fa";
+  Card, Flex, Heading, CardBody, Text, Tag, TagLabel, TagLeftIcon, IconButton,useDisclosure, Modal, ModalOverlay, ModalContent, ModalCloseButton,Input, ModalHeader, Button, useBreakpointValue,VStack, HStack, CardFooter, Icon, Tooltip} from "@chakra-ui/react";
+import { FaTimesCircle, FaHeartbeat, FaComments } from "react-icons/fa";
 import { RiShieldCheckFill } from 'react-icons/ri';
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Bank,Government,Hospital,sub_dept } from "../../data/data.js";
+import { Bank, Government, Hospital, sub_dept } from "../../data/data.js";
+import { motion } from "framer-motion";
+const MotionIconButton = motion(IconButton);
 
 export default function AdminComponent() {
   const [key, setKey] = useState(() => {
@@ -58,7 +56,7 @@ export default function AdminComponent() {
   };
 
   return (
-    <Flex direction="column" align="center" justify="center" height="100vh" width="100vw"  mt="16" px={4}>
+    <Flex direction="column" align="center" justify="center" height="100vh" width="100vw" mt="16" px={4}>
       <Tag
         size="lg"
         variant='solid'
@@ -122,6 +120,20 @@ export default function AdminComponent() {
           </Flex>
         </ModalContent>
       </Modal>
+      <Tooltip label="Dashboard" placement="left">
+        <MotionIconButton
+          icon={<FaComments />}
+          colorScheme="teal"
+          size="lg"
+          rounded="full"
+          onClick={()=>navigate(`/admindashboard/${organisation}`)}
+          whileHover={{ scale: 1.1 }}
+          boxShadow="xl"
+          position="fixed"
+          bottom="30px"
+          right="30px"
+        />
+      </Tooltip>
     </Flex>
   );
 }
