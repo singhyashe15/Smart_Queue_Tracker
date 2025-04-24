@@ -7,7 +7,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 
 export default function Appointment() {
   const [step, setStep] = useState(1)
-  const [detail, setDetails] = useState({ organisation: "", department: "", name: "",age:"", email: "", postalCode: 0 })
+  const [detail, setDetails] = useState({ organisation: "", department: "", name: "",age:"", email: "", postalCode: 0,date:"" })
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { organisation } = useParams()
