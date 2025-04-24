@@ -102,42 +102,6 @@ export default function UserComponent() {
           </MotionBox>
         ))}
       </StackComponent>
-      <Box
-        w="100%"
-        overflowX="auto"
-        mt={10}
-        px={4}
-        sx={{
-          "&::-webkit-scrollbar": {
-            height: "8px",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "#CBD5E0",
-            borderRadius: "4px",
-          },
-          scrollbarWidth: "thin",
-          scrollBehavior: "smooth",
-        }}
-      >
-        <Flex gap={4} minW="max-content">
-          {["queue1.jpg", "queue2.jpg", "queue3.png", "queue4.jpg"].map((img, i) => (
-            <Box
-              key={i}
-              w="280px"
-              h="180px"
-              bgImage={`url(/${img})`}
-              bgSize="cover"
-              bgPosition="center"
-              rounded="xl"
-              boxShadow="md"
-              flexShrink={0}
-              scrollSnapAlign="start"
-            />
-          ))}
-        </Flex>
-      </Box>
-
-
       <Tooltip label="Chat with Bot" placement="left">
         <MotionIconButton
           icon={<FaComments />}
