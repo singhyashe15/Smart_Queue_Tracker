@@ -79,7 +79,7 @@ export default function ViewShedule() {
             <Button colorScheme='teal' px="16" m="4" onClick={() => navigate(`/appointment/${organisation}`)}>
               Book an Appointment
             </Button>
-            <Button colorScheme='teal' p="4" m="4" onClick={() => navigate("/viewStatus")}>
+            <Button colorScheme='teal' p="4" m="4" onClick={() => navigate(`/viewStatus/${organisation}`)}>
               Check Live Queue Status
             </Button>
           </Flex>
