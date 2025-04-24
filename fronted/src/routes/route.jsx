@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     errorElement: <Error />
   },
   {
-    path: 'viewSchedule',
+    path: 'viewSchedule/:orgs',
     element: (
       <ProtectedRoute>
         <ViewSchedule />
