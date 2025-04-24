@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HStack, Link, Flex, Drawer, DrawerOverlay, DrawerCloseButton, DrawerBody, DrawerHeader, DrawerContent, IconButton, useDisclosure, VStack, Avatar } from "@chakra-ui/react";
+import { HStack,Text, Link, Flex, Drawer, DrawerOverlay, DrawerCloseButton, DrawerBody, DrawerHeader, DrawerContent, IconButton, useDisclosure, VStack, Avatar } from "@chakra-ui/react";
 import HomeComponent from "../components/homeComponent.jsx";
 import UserComponent from "../components/user/userComponent.jsx";
 import AdminComponent from "../components/admin/adminComponent.jsx";
