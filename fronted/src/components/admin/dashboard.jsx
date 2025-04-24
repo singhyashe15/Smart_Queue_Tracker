@@ -1,27 +1,12 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Flex,
-  Avatar,
-  Text,
-  VStack,
-  Heading,
-  Divider,
-  Button,
-  useColorModeValue,
-  SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
-  HStack,
-} from "@chakra-ui/react";
+import {Box,Flex,Avatar,Text,VStack,Heading,Divider,Button,SimpleGrid,Stat,StatLabel,StatNumber,HStack,} from "@chakra-ui/react";
 import { BiLogOut } from "react-icons/bi";
 import { FaUser, FaCalendarCheck, FaRupeeSign } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function InteractiveDashboard() {
   const navigate = useNavigate();
-  const cardBg = useColorModeValue("white", "gray.800");
+  const {organisation} = useParams
   const [user,setUser] = useState(()=>{
     const saved = localStorage.getItem("user");
     return saved !== null ? JSON.parse(saved) : "";
@@ -36,9 +21,9 @@ export default function InteractiveDashboard() {
     <Flex direction={{ base: "column", md: "row" }} height="100vh" width="100vw" justify="center" align="center">
       <VStack>
         {/* Left Profile Section */}
-        <HStack w={{ base: "100%", md: "300px" }} p={6} boxShadow="md" spacing="10">
+        <HStack w={{ base: "100%", md: "100%" }} p={6} boxShadow="md" spacing="10">
           <Box>
-            <Avatar size="xl" name="Yashraj Singh" />
+            <Avatar size="xl" name="Admin" />
           </Box>
           <Box>
             <Box>
