@@ -24,7 +24,7 @@ export default function ViewStatus() {
 
     const ans = hours >= 8 & hours < 16; // Check if within 8 AM to 4 PM
     console.log(ans)
-    if (ans) {
+    if (ans === 1) {
       setOpen(true)
     } else {
       setOpen(false)
@@ -39,7 +39,7 @@ export default function ViewStatus() {
     return res.status === 201 ? res.data.data : [];
   };
   
-  const { data, isPending } = useQuery({
+  const { data,isLoading } = useQuery({
     queryKey: ["liveStatus"],
     queryFn: () => fetchStatus(user.id),
     staleTime: 10000
@@ -76,7 +76,7 @@ export default function ViewStatus() {
       }
     }
   }
-  if (isPending) {
+  if (isLoading) {
     return (
       <VStack display="flex" justifyContent="center" alignItems="center" height="100vh" width="100vw"colorpalette="teal">
         <Spinner color="red.600" />
@@ -91,10 +91,11 @@ export default function ViewStatus() {
         {
           data?.map((data) => {
             return (
-              <Flex key={data?.id} direction="column" border="2px solid" borderColor="blue.400" borderRadius="lg" px="8" py="4">
+              <Flex key={data?.id} direction="column" border="2px solid" borderColor="blue.400" borderRadius="lg" px="8" py="4" fontWeight="semibold">
                 <Text my="2">{data?.organisation}</Text>
                 <Text>{data?.department}</Text>
-                <Text my="2">{data?.appointment_time}</Text>
+                <Text>Date : {data?.date.split("T")[0]}</Text>
+                <Text my="2">Appointment Time : {data?.appointment_time}</Text>
                 <HStack spacing={2} align="center">
                   <Icon as={FaClock} boxSize={4} color="gray.500" />
                   {
@@ -110,6 +111,7 @@ export default function ViewStatus() {
             )
           })
         }
+       
       </StackComponent>
     </Box>
   )
