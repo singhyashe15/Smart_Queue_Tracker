@@ -96,25 +96,18 @@ export const Organisation = {
     { name: "PassportSevaKendra",location:"Serampore"  },
     { name: "IncomeTaxDepartment",location:"Serampore"  },
     { name: "RTOOffice",location:"Serampore"  }
-  ],
-  Institution: [
-    { name: "IITDelhi",location:"Delhi"  },
-    { name: "NITTrichy",location:"Trichy"  },
-    { name: "IIMBangalore",location:"Bangalore"  },
-    { name: "DelhiUniversity",location:"Delhi" }
   ]
 };
 
 
 export const sub_dept = { Bank, Hospital, Government };
 
-import { FaLandmark, FaPiggyBank, FaSchool, FaHospital } from "react-icons/fa";
+import { FaLandmark, FaPiggyBank, FaHospital } from "react-icons/fa";
 
 export const CardProduct = [
   { id: 1, name: "Government", icon: FaLandmark },
-  { id: 2, name: "Institutions", icon: FaSchool },
-  { id: 3, name: "Bank", icon: FaPiggyBank },
-  { id: 4, name: "Hospital", icon:FaHospital  }
+  { id: 2, name: "Bank", icon: FaPiggyBank },
+  { id: 3, name: "Hospital", icon:FaHospital  }
 ];
 
 export const customQ = [
