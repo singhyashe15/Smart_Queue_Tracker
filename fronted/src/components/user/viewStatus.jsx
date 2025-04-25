@@ -73,7 +73,7 @@ export default function ViewStatus() {
 
       if (res.data.success) {
         toast.success(res.data.msg);
-        navigate('/')
+        navigate('/',{replace:true})
       } else {
         toast.error(res.data.msg)
       }
