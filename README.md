@@ -9,6 +9,7 @@ A modern web-based queue management system built with React (frontend) and Node.
 - 📋 **Real-Time Queue Tracking**
 - 🏢 **Support for Multiple Departments & Organizations**
 - 🔔 **Notifications & Status Updates**
+- **A real time Chat Bot (QareBot) for resolving any query regarding login,how to book an appointment ,cancellation , etc.. as well as directly book an appointment from here also**
 
 ## 🛠️ Tech Stack
 
