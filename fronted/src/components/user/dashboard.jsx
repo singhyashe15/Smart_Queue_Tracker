@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   return (
     <Flex direction={{ base: "column", md: "row" }} height="100vh" width="100vw" justify="center" align="center">
-      <VStack>
+      <VStack w={{base:"md",md:"auto"}}>
       {/* Profile Section */}
         <MotionBox
           bg="white"
@@ -58,7 +58,7 @@ const Dashboard = () => {
                 {user?.name}
               </Text>
               <Text fontSize="sm" color="gray.500" fontWeight="semibold">
-                Welcome back to Smart Queue!
+                Welcome to Smart Queue Management System!
               </Text>
             </VStack>
           </HStack>
