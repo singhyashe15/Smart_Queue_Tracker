@@ -61,10 +61,14 @@ export default function Home() {
           <DrawerBody>
             {user !== null &&
               <VStack>
+                <Link variant="plain" href="/dashboard" _hover={{ textDecoration: "none" }}px="8" py="2" border="1px" borderColor="blue.200" rounded="full">
+                  Dashboard
+                </Link>
                 <Link
                   display="block"
                   mb={2}
                   href="/logout"
+                  px="8" py="2" border="1px" borderColor="blue.200" rounded="full"
                   _hover={{ textDecoration: "none", color: "red.500" }}
                 >
                   <HStack spacing={2}>
@@ -72,16 +76,12 @@ export default function Home() {
                     <Text>Logout</Text>
                   </HStack>
                 </Link>
-
-                <Link variant="plain" href="/dashboard" _hover={{ textDecoration: "none" }}>
-                  Dashboard
-                </Link>
-              </VStack>}
+              </VStack>}}
             {user === null &&
               <VStack align="left" spacing="4" pt="8">
-                <Link variant="plain" href="/admin" _hover={{ textDecoration: "none" }} >Admin</Link>
-                <Link variant="plain" href="/register" _hover={{ textDecoration: "none" }} >Register</Link>
-                <Link variant="plain" href="/login" _hover={{ textDecoration: "none" }} >Login</Link>
+                <Link variant="plain" href="/admin" _hover={{ textDecoration: "none" }} px="8" py="2" border="1px" borderColor="blue.200" rounded="full">Admin</Link>
+                <Link variant="plain" href="/register" _hover={{ textDecoration: "none" }} px="8" py="2" border="1px" borderColor="blue.200" rounded="full" >Register</Link>
+                <Link variant="plain" href="/login" _hover={{ textDecoration: "none" }} px="8" py="2" border="1px" borderColor="blue.200" rounded="full">Login</Link>
               </VStack>
             }
           </DrawerBody>
