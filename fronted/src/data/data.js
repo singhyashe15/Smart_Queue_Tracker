@@ -123,7 +123,7 @@ export const Appointment = [
   { prompt: "Enter Email" },
   { prompt: "Enter Age" },
   { prompt: "Enter PinCode" },
-  { prompt: "Enter Sub-Organisation" },
+  { prompt: "Enter Organisation Name" },
   { prompt: "Enter Department" },
   { prompt: "Enter date Of Appointment : YYYY-MM-DD" },
   { prompt: "Submit Enter :  y" }
