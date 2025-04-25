@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   return (
     <Flex direction={{ base: "column", md: "row" }} height="100vh" width="100vw" justify="center" align="center">
-      <VStack w={{base:"md",md:"auto"}}>
+      <VStack w={{base:"md",md:"auto"}} wrap="wrap">
       {/* Profile Section */}
         <MotionBox
           bg="white"
@@ -48,7 +48,7 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          w="full"
+          // w="full"
           maxW="500px"
         >
           <HStack spacing={4}>
