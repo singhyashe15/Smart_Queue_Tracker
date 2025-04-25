@@ -43,6 +43,11 @@ export default function UserComponent() {
   };
 
   const handleData = async (prompt) => {
+    
+    if(prompt.length === 0){
+      setMessages((prev) => [...prev, { sender: "bot", text: "Enter something" }]);
+      return;
+    }
     setMessages((prev) => [...prev, { sender: "user", text: prompt }]);
     if (prompt === 'y') {
       console.log(data)
@@ -54,6 +59,8 @@ export default function UserComponent() {
       } catch (error) {
         console.log(error)
         setMessages((prev) => [...prev, { sender: "bot", text: "Provided email not Found" }]);
+      }finally{
+        setInput(false)
       }
     } else {
       setData(prev => ({
@@ -124,7 +131,7 @@ export default function UserComponent() {
             AI Chat Bot
           </ModalHeader>
 
-          <ModalBody p={4} overflowY="auto">
+          <ModalBody p={4} overflowY="auto" h="100%">
             <VStack align="stretch" spacing={3}>
               <Flex
                 alignSelf="flex-start"
